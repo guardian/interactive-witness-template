@@ -1,0 +1,49 @@
+<div class="overlay__nav">
+	<a href="#list" class="nav-icon nav-icon--close">
+		<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" ><path class="icon" d="M7.5 9L1 2l1-1 7 6.5L16 1l1 1-6.5 7 6.5 7-1 1-7-6.5L2 17l-1-1 6.5-7z"/></svg>
+	</a>
+	<div class="overlay__progress"><%= model.position + ' / ' + number %></div>
+	<a <% if (model.nextItem) { %>href="#item-<%= model.nextItem %>"<% } %> class="nav-icon nav-icon--next <% if (!model.nextItem) { %>nav-icon--dimmed<% } %> ">
+		<svg width="23" height="23" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><title/><desc/><g fill="none"><path d="M23 11.5L12.704 21.6l-.96-.96L19.8 12H0v-2h19.8L11.745.96l.96-.96L23 10.5v1" class="icon"/><path d="M11 32.313C-.75 32.313-10.31 22.753-10.31 11c0-11.75 9.56-21.312 21.313-21.312 11.752 0 21.313 9.56 21.313 21.312S22.753 32.313 11 32.313M11-11c-12.15 0-22 9.85-22 22s9.85 22 22 22 22-9.85 22-22-9.85-22-22-22" fill="none"/></g></svg>
+	</a>
+	<a <% if (model.prevItem) { %>href="#item-<%= model.prevItem %>"<% } %> class="nav-icon nav-icon--prev <% if (!model.prevItem) { %>nav-icon--dimmed<% } %>">
+		<svg width="23" height="23" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><title/><desc/><g fill="none"><path d="M0 11.5l10.296 10.1.96-.96L3.2 12H23v-2H3.2L11.255.96l-.96-.96L0 10.5v1" class="icon"/><path d="M11 32.313C-.75 32.313-10.31 22.753-10.31 11c0-11.75 9.56-21.312 21.313-21.312 11.752 0 21.313 9.56 21.313 21.312S22.753 32.313 11 32.313M11-11c-12.15 0-22 9.85-22 22s9.85 22 22 22 22-9.85 22-22-9.85-22-22-22" fill="none"/></g></svg>
+	</a>
+</div>
+<div class="overlay__main">
+	<div class="overlay__header">
+		<a href="#list" class="headline-highlight"><span class="show-mobile">« Back</span> <span class="hide-mobile"><%= data.headline %></span></span></a>
+		<div class="mobile-nav show-mobile">
+			<a <% if (model.prevItem) { %>href="#item-<%= model.prevItem %>"<% } %> class="nav-icon nav-icon--prev <% if (!model.prevItem) { %>nav-icon--dimmed<% } %>">
+				<svg width="23" height="23" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><title/><desc/><g fill="none"><path d="M0 11.5l10.296 10.1.96-.96L3.2 12H23v-2H3.2L11.255.96l-.96-.96L0 10.5v1" class="icon"/><path d="M11 32.313C-.75 32.313-10.31 22.753-10.31 11c0-11.75 9.56-21.312 21.313-21.312 11.752 0 21.313 9.56 21.313 21.312S22.753 32.313 11 32.313M11-11c-12.15 0-22 9.85-22 22s9.85 22 22 22 22-9.85 22-22-9.85-22-22-22" fill="none"/></g></svg>
+			</a>
+			<a <% if (model.nextItem) { %>href="#item-<%= model.nextItem %>"<% } %> class="nav-icon nav-icon--next <% if (!model.nextItem) { %>nav-icon--dimmed<% } %> ">
+				<svg width="23" height="23" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg"><title/><desc/><g fill="none"><path d="M23 11.5L12.704 21.6l-.96-.96L19.8 12H0v-2h19.8L11.745.96l.96-.96L23 10.5v1" class="icon"/><path d="M11 32.313C-.75 32.313-10.31 22.753-10.31 11c0-11.75 9.56-21.312 21.313-21.312 11.752 0 21.313 9.56 21.313 21.312S22.753 32.313 11 32.313M11-11c-12.15 0-22 9.85-22 22s9.85 22 22 22 22-9.85 22-22-9.85-22-22-22" fill="none"/></g></svg>
+			</a>
+		</div>
+	</div>
+	<% if (model.updates[0].hasOwnProperty('image')) { %>
+		<div class="overlay__image overlay__image--<%= model.updates[0].image.orientation %>"/ style="background-image: url('<%= model.updates[0].image.mediumoriginalaspectdouble %>');">
+			<% if (model.updates[0].image.orientation == 'landscape') { %>
+				<div class="expand-icon"></div>
+			<% } %>
+		</div>
+	<% } %>
+	<div class="overlay__content <% if (model.updates[0].hasOwnProperty('image')) { %>overlay__content--<%= model.updates[0].image.orientation %> <% } %>">
+		<div class="overlay__headline">
+			<%= model.headline %>
+		</div>
+		<div class="overlay__author">
+			by <span><%= model.user.displayName %></span>
+		</div>
+		<div class="overlay__social">
+			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
+			<a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(data.headline + ' "' + model.headline + '" @guardian') %>&url=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon twitter" data-link-name="social twitter voices-modal"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
+			<a href="mailto:?subject=<%= encodeURIComponent(data.headline) %>&body=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon email" data-link-name="social email voices-modal"><img src="@@assetPath@@/imgs/share-email.svg"/></a>
+		</div>
+		<hr/>
+		<div class="overlay__body-text">
+			<%= model.updates[0].body.replace(/\n/g, "<br/>") %>
+		</div>
+	</div>
+</div>

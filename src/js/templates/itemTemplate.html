@@ -1,0 +1,31 @@
+<% if (item.updates[0].hasOwnProperty('image')) { %>
+    <% if (item.updates[0].image.orientation === 'portrait') { %>
+            <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--portrait item--thin page-<%= page %>">
+                <div class="wrapper">
+                    <div class="image__container">
+                        <div class="background-image portrait" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    </div>
+                    <div class="inner">
+                        <div class="headline"><span><%= item.headline %></span></div>
+                    </div>
+                </div>
+
+            </a>
+    <% } else if (item.updates[0].image.orientation === 'landscape') { %>
+            <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--landscape page-<%= page %>">
+                <div class="wrapper">
+                    <div class="image__container">
+                        <div class="background-image landscape" data-original="<%= item.updates[0].image.mediumoriginalaspectdouble %>"></div>
+                    </div>
+                    <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>
+                </div>
+            </a>
+    <% } %>
+<% } else { %>
+    <a href="#item-<%= item.id.substring(7) %>" id="item-<%= item.id.substring(7) %>" class="item item--no-image item--thin page-<%= page %>">
+        <div class="wrapper">
+            <div class="quote"><span><%= trunc(item.updates[0].body, 200) %></span></div>
+            <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>
+        </div>
+    </a>
+<% } %>
