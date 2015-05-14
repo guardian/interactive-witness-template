@@ -175,7 +175,7 @@ define([
                         that.model.unshift(toAdd);
                     });
                 }
-
+                counter = 0;
                 // reorder collection to avoid gaps in the grid
                 if($(document).width() > 980) {
                     _.each(this.model.models, function(item, i) {
@@ -188,7 +188,7 @@ define([
                         } else {
                             counter += 1;
                         }
-
+                        
                         if(counter == perRow + 1) {
                             sliced = _.filter(items.slice(i, items.length), function (item) {
                                 return (item.attributes.updates[0].hasOwnProperty('image') && item.attributes.updates[0].image.orientation === 'portrait') || !item.attributes.updates[0].hasOwnProperty('image');
@@ -197,8 +197,10 @@ define([
                                 toMove = that.model.where({id: sliced[0].attributes.id});
                                 that.model.remove(toMove);
                                 that.model.add(toMove, {at: i});
+                                counter = 0;
+                            } else {
+                                counter = 2;
                             }
-                            counter = 0;
                         } else if(counter == perRow) {
                             counter = 0;
                         }
@@ -348,7 +350,7 @@ define([
                                 } else {
                                     counter += 1;
                                 }
-
+                                
                                 if(counter == perRow + 1) {
                                     sliced = _.filter(items.slice(i, items.length), function (item) {
                                         return (item.attributes.updates[0].hasOwnProperty('image') && item.attributes.updates[0].image.orientation === 'portrait') || !item.attributes.updates[0].hasOwnProperty('image');
@@ -357,13 +359,16 @@ define([
                                         toMove = items.where({id: sliced[0].attributes.id});
                                         items.remove(toMove);
                                         items.add(toMove, {at: i});
+                                        counter = 0;
+                                    } else {
+                                        counter = 2;
                                     }
-                                    counter = 0;
                                 } else if(counter == perRow) {
                                     counter = 0;
                                 }
                             }
                         });
+    
                     }
 
                     //end
