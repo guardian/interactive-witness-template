@@ -46,7 +46,7 @@ define([
                     d.id = i + 1;
                     d.headline = d.namefirst + " " + d.namelast;
                     d.origin = d.place + ", " + d.country;
-                    d.body = d.who + "\n" + d.why;
+                    d.body = d.who + "\n\n" + d.why;
                     
                     if (d.imgflag === 1) {
                         var img = new Image();
@@ -72,9 +72,12 @@ define([
                 $('.element-interactive').after('<div class="overlay__container"><div class="overlay__body"></div></div>');
             },
             render: function(itemID) {
-                
-                var item = items.where({id: parseInt(itemID)})[0]; 
-                var modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
+                if (itemID < 1) { itemID = items.length; }
+                else if (itemID > items.length) { itemID = 1; }
+                //console.log(itemID, "[render]")
+
+                var item = items.where({id: parseInt(itemID)})[0],
+                    modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
                 //var modalTemplate = this.template({model: this.model.models[0].toJSON(), data: dataHeader});
                 
                 $('.overlay__body').html(modalTemplate);
@@ -120,46 +123,60 @@ define([
                 return this;
             },
             keydown: function(event) {
-                var e = event || window.event;
-
-                if (e.keyCode == 39 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.nextItem) {
+                var e = event || window.event,
+                    hash = window.location.hash,
+                    itemID = parseInt(hash.slice(hash.indexOf('-')+1, hash.length));
+                
+                if (e.keyCode == 39 && hash.substring(0,5) == '#item' /*&& modalView.model.models[0].attributes.nextItem*/) {
+                    var nextID = (itemID+1) > items.length ? 1 : (itemID+1);
+                    
                     if(location.replace && window.history && window.history.back) {
-                        location.replace('#item-' + modalView.model.models[0].attributes.nextItem);
+                        //location.replace('#item-' + modalView.model.models[0].attributes.nextItem);
+                        location.replace('#item-' + nextID);
                     } else {
-                        window.location.hash = 'item-' + modalView.model.models[0].attributes.nextItem;
+                        //window.location.hash = 'item-' + modalView.model.models[0].attributes.nextItem;
+                        window.location.hash = 'item-' + nextID;
                     }
                 }
 
-                if (e.keyCode == 37 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.prevItem) {
+                if (e.keyCode == 37 && window.location.hash.substring(0,5) == '#item' /*&& modalView.model.models[0].attributes.prevItem*/) {
+                    var prevID = (itemID-1) < 1 ? items.length : (itemID-1);
+                    
                     if(location.replace && window.history && window.history.back) {
-                        location.replace('#item-' + modalView.model.models[0].attributes.prevItem);
+                        //location.replace('#item-' + modalView.model.models[0].attributes.prevItem);
+                        location.replace('#item-' + prevID);
                     } else {
-                        window.location.hash = 'item-' + modalView.model.models[0].attributes.prevItem;
+                        //window.location.hash = 'item-' + modalView.model.models[0].attributes.prevItem;
+                        window.location.hash = 'item-' + prevID;
                     }
                 }
             },
             addNavAtts: function(itemID) {
                 this.model.shift();
                 this.model.unshift(items.where({ id: itemID }));
-
                 //var indexPos = _.indexOf(items.models, items.where({ id: itemID })[0]);
                 //this.model.models[0].set('position', (indexPos+1));
-                //console.log(indexPos);
-                //itemID = items.models[itemID].id;
-                var item = items.where({id: parseInt(itemID)})[0]; 
+                
+                itemID = parseInt(itemID);
+                if (itemID < 1) { itemID = items.length; }
+                else if (itemID > items.length) { itemID = 1; }
+                //console.log(itemID, "[nav]")
+               
+                var item = items.where({id: itemID})[0],
+                    itemsLength = items.length;
+                
                 item.set('position', itemID);
-                console.log(itemID);
 
-                //if(items.at(indexPos+1)) {
-                    //this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
-                if(itemID!==items.length) {
-                    item.set('nextItem', (parseInt(itemID)+1));
+                if(itemID !== itemsLength) {
+                    item.set('nextItem', (itemID + 1));
+                } else {
+                    item.set('nextItem', 1);
                 }
 
-                //if(items.at(indexPos-1)) {
-                    //this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
-                if(itemID!==0) {
-                    item.set('prevItem', (parseInt(itemID)-1));
+                if(itemID !== 1) {
+                    item.set('prevItem', (itemID - 1));
+                } else {
+                    item.set('prevItem', itemsLength);
                 }
 
                 this.render(itemID);
