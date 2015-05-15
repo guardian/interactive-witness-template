@@ -1,5 +1,5 @@
-# interactive-witness-story 
-Witness template for interactives
+# interactive-witness-keepitintheground
+[Meet #KeepitintheGround supporters](http://www.theguardian.com/environment/ng-interactive/2015/may/27/keepitintheground-supporters-wellcome-trust-gates-foundation)
 
 ## Getting started
 If you haven't already installed [nodejs](http://nodejs.org/download/),
