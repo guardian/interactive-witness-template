@@ -1,5 +1,4 @@
 define([
-    'pegasus',
     'backbone',
     'lazyload',
     'text!templates/itemTemplate.html',
@@ -7,7 +6,6 @@ define([
     'text!templates/headerTemplate.html',
     'text!templates/footerTemplate.html'
 ], function(
-    pegasus,
     backbone,
     lazyload,
     itemTmpl,
@@ -15,143 +13,159 @@ define([
     headerTmpl,
     footerTmpl
 ) {
-   'use strict';
+    'use strict';
 
-   var  sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/0Aoi-l6_XQTv5dG9HNHJqdXlKeGtDb0pvUHdOWTBBUHc.json',
-        sheetName = $('figure.element-interactive').attr('data-alt'),
-        itemCollection,
+    var sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/0Aoi-l6_XQTv5dG9HNHJqdXlKeGtDb0pvUHdOWTBBUHc.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
-        page = 1,
-        pageSize = 100,
-        totalNumber = 0,
+    page = 1,
         perRow = 4,
         counter = 0,
-        noticeboard,
-        votedInterestingBy,
-        order; 
+        dataHeader = []; 
 
-    function init(el, context, config, mediator) {
-        pegasus(sheetUrl).then(function (spreadsheet) {
-            app(spreadsheet.sheets[sheetName][0]);
-        });
+    function init() {
+        app();
     }
 
-    function app(data) {
-        noticeboard = data.noticeboard;
-        votedInterestingBy = (data.votedinterestingby) ? '&votedInterestingBy=' + data.votedinterestingby : '';
-        order = data.order;
+    function app() {
+
         var Item = Backbone.Model.extend(),
             ItemList = Backbone.Collection.extend({
-                model: Item,
-                url: 'http://n0ticeapis.com/2/search?noticeboard=' + noticeboard + '&pageSize=' + pageSize + '&page=' + page + '&order=' + order + votedInterestingBy,
-                sync : function(method, collection, options) {
-                    options.dataType = "jsonp";
-                    options.cache = true;
-                    options.jsonpCallback = "witnessVisuals";
-                    return Backbone.sync(method, collection, options);
-                },
-                parse: function(resp) {
-                    totalNumber = resp.numberFound;
-                    return resp.results;
-                }
-            }),
-            ModalItem = Backbone.Collection.extend({
-                model: Item
-            });
+            model: Item,
+            url  : sheetUrl, 
+            sync : function(method, collection, options) {
+                options.dataType = "json";
+                return Backbone.sync(method, collection, options);
+            },
+            parse: function(resp) {
+                var dataContent = resp.sheets.CONTENT;
+
+                dataHeader = resp.sheets.HEADER[0];
+                dataContent.map(function(d, i) {
+                    d.id = i;
+                    d.headline = d.namefirst + " " + d.namelast;
+                    d.origin = d.place + ", " + d.country;
+                    d.body = d.who + "\n" + d.why;
+                    //console.log(d.imgflag, d.imgorientation);
+                    if (d.imgflag === 1) {
+                        var img = new Image();
+                        img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
+                        //img.onload = function() {
+                        img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
+                        d.image = img;
+                        //};
+                    }
+                    
+                    return d;
+                });
+
+                return dataContent;
+            }
+        }),
+        ModalItem = Backbone.Collection.extend({
+            model: Item
+        });
 
         var ModalView = Backbone.View.extend({
-                template: _.template(modalTmpl),
-                initialize: function() {
-                    $(document).on('keydown', this.keydown);
-                    $('.element-interactive').after('<div class="overlay__container"><div class="overlay__body"></div></div>');
-                },
-                render: function() {
-                    if(page*pageSize - modal.models[0].attributes.position < 5) {
-                        loadMorePosts();
-                    }
+            template: _.template(modalTmpl),
+            initialize: function() {
+                $(document).on('keydown', this.keydown);
+                $('.element-interactive').after('<div class="overlay__container"><div class="overlay__body"></div></div>');
+            },
+            render: function(itemID) {
+                var modalTemplate = this.template({model: items.models[itemID].toJSON(), data: dataHeader, number: items.models.length});
+                //var modalTemplate = this.template({model: this.model.models[0].toJSON(), data: dataHeader});
+                
+                $('.overlay__body').html(modalTemplate);
+                $('body').scrollTop(0);
+                $('.overlay__container').addClass('overlay__container--show');
+                $('html').addClass('dropdown-open');
 
-                    var modalTemplate = this.template({model: this.model.models[0].toJSON(), data: data, number: totalNumber});
-                    $('.overlay__body').html(modalTemplate);
-                    $('body').scrollTop(0);
-                    $('.overlay__container').addClass('overlay__container--show');
-                    $('html').addClass('dropdown-open');
-                    
-                    if(location.replace && window.history && window.history.back) {
-                        $('.nav-icon--next, .nav-icon--prev').click(function(e) {
-                            if(e.currentTarget.hash) {
-                                e.preventDefault();
-                                location.replace(e.currentTarget.hash);
-                            }
-                        });
-                        if(history.length > 1) {
-                            $('.nav-icon--close, .headline-highlight').click(function(e) {
-                                e.preventDefault(); 
-                                window.history.back();
-                            });
-                        }
-                    }
-
-                    $('.overlay__image--landscape').click(function(e) {
-                        if($(document).width() > 1140) {
-                            $('.overlay__content').addClass('overlay__content--fade');
-                            setTimeout(function () {
-                                $(e.currentTarget).toggleClass('overlay__image--expand');
-
-                                var img = new Image();
-                                img.src = modalView.model.models[0].attributes.updates[0].image.extralarge;
-                                img.onload = function () {
-                                   $(e.currentTarget).css('background-image', 'url(' + img.src + ')');
-                                }
-
-                                $('.overlay__content').toggleClass('overlay__content--expand');
-                            }, 100);
-                            setTimeout(function () {
-                                $('.overlay__content').removeClass('overlay__content--fade');
-                            }, 100);
+                if(location.replace && window.history && window.history.back) {
+                    $('.nav-icon--next, .nav-icon--prev').click(function(e) {
+                        if(e.currentTarget.hash) {
+                            e.preventDefault();
+                            location.replace(e.currentTarget.hash);
                         }
                     });
-
-                    return this;
-                },
-                keydown: function(event) {
-                    var e = event || window.event;
-
-                    if (e.keyCode == 39 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.nextItem) {
-                        if(location.replace && window.history && window.history.back) {
-                            location.replace('#item-' + modalView.model.models[0].attributes.nextItem);
-                        } else {
-                            window.location.hash = 'item-' + modalView.model.models[0].attributes.nextItem;
-                        }
+                    if(history.length > 1) {
+                        $('.nav-icon--close, .headline-highlight').click(function(e) {
+                            e.preventDefault(); 
+                            window.history.back();
+                        });
                     }
-
-                    if (e.keyCode == 37 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.prevItem) {
-                        if(location.replace && window.history && window.history.back) {
-                            location.replace('#item-' + modalView.model.models[0].attributes.prevItem);
-                        } else {
-                            window.location.hash = 'item-' + modalView.model.models[0].attributes.prevItem;
-                        }
-                    }
-                },
-                addNavAtts: function(itemID) {
-                    this.model.shift();
-                    this.model.unshift(items.where({ id: 'report/' + itemID }));
-
-                    var indexPos = _.indexOf(items.models, items.where({ id: 'report/' + itemID })[0]);
-
-                    this.model.models[0].set('position', (indexPos+1));
-                    
-                    if(items.at(indexPos+1)) {
-                        this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
-                    }
-
-                    if(items.at(indexPos-1)) {
-                        this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
-                    }
-
-                    this.render();
                 }
-            });
+
+                $('.overlay__image--landscape').click(function(e) {
+                    if($(document).width() > 1140) {
+                        $('.overlay__content').addClass('overlay__content--fade');
+                        setTimeout(function () {
+                            $(e.currentTarget).toggleClass('overlay__image--expand');
+
+                            var img = new Image();
+                            img.src = modalView.model.models[0].image.src;
+                            img.onload = function () {
+                                $(e.currentTarget).css('background-image', 'url(' + img.src + ')');
+                            };
+
+                            $('.overlay__content').toggleClass('overlay__content--expand');
+                        }, 100);
+                        setTimeout(function () {
+                            $('.overlay__content').removeClass('overlay__content--fade');
+                        }, 100);
+                    }
+                });
+
+                return this;
+            },
+            keydown: function(event) {
+                var e = event || window.event;
+
+                if (e.keyCode == 39 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.nextItem) {
+                    if(location.replace && window.history && window.history.back) {
+                        location.replace('#item-' + modalView.model.models[0].attributes.nextItem);
+                    } else {
+                        window.location.hash = 'item-' + modalView.model.models[0].attributes.nextItem;
+                    }
+                }
+
+                if (e.keyCode == 37 && window.location.hash.substring(0,5) == '#item' && modalView.model.models[0].attributes.prevItem) {
+                    if(location.replace && window.history && window.history.back) {
+                        location.replace('#item-' + modalView.model.models[0].attributes.prevItem);
+                    } else {
+                        window.location.hash = 'item-' + modalView.model.models[0].attributes.prevItem;
+                    }
+                }
+            },
+            addNavAtts: function(itemID) {
+                this.model.shift();
+                this.model.unshift(items.where({ id: itemID }));
+
+                //var indexPos = _.indexOf(items.models, items.where({ id: itemID })[0]);
+                console.log(items);
+                var indexPos = items.where({id: parseInt(itemID)})[0].id; 
+                //this.model.models[0].set('position', (indexPos+1));
+                console.log(itemID);
+                console.log(indexPos);
+                //itemID = items.models[itemID].id;
+                //console.log(itemID);
+                items.models[indexPos].set('position', (indexPos));
+
+                //if(items.at(indexPos+1)) {
+                    //this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
+                if(indexPos!==items.length) {
+                    items.models[indexPos].set('nextItem', (parseInt(indexPos)+1));
+                }
+
+                //if(items.at(indexPos-1)) {
+                    //this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
+                if(indexPos!==0) {
+                    items.models[indexPos].set('prevItem', (parseInt(indexPos)-1));
+                }
+
+                this.render(itemID);
+            }
+        });
 
         var modal = new ModalItem,
             modalView = new ModalView({model: modal});
@@ -164,8 +178,8 @@ define([
             render: function() {
                 var that = this,
                     sliced,
-                    toMove,
-                    sortIDs = data.favourites.toString().split(","),
+                toMove,
+                sortIDs = '',//data.favourites.toString().split(","),
                     toAppend = '';
 
                 if(sortIDs) {
@@ -179,8 +193,9 @@ define([
                 // reorder collection to avoid gaps in the grid
                 if($(document).width() > 980) {
                     _.each(this.model.models, function(item, i) {
-                        if(item.attributes.updates[0].hasOwnProperty('image')) {
-                            if(item.attributes.updates[0].image.orientation == 'landscape') {
+                        if(item.attributes.hasOwnProperty('image')) {
+
+                            if(item.attributes.image.orientation == 'landscape') {
                                 counter += 2;
                             } else {
                                 counter += 1;
@@ -188,10 +203,10 @@ define([
                         } else {
                             counter += 1;
                         }
-                        
+
                         if(counter == perRow + 1) {
                             sliced = _.filter(items.slice(i, items.length), function (item) {
-                                return (item.attributes.updates[0].hasOwnProperty('image') && item.attributes.updates[0].image.orientation === 'portrait') || !item.attributes.updates[0].hasOwnProperty('image');
+                                return (item.attributes.hasOwnProperty('image') && item.attributes.image.orientation === 'portrait') || !item.attributes.hasOwnProperty('image');
                             });
                             if(sliced.length > 0) {
                                 toMove = that.model.where({id: sliced[0].attributes.id});
@@ -210,6 +225,8 @@ define([
                 //end
 
                 _.each(this.model.models, function(item){
+                    //console.log(this.model);
+                    //console.log(item.toJSON());
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;
@@ -217,12 +234,12 @@ define([
 
                 $(toAppend).appendTo(this.el);
 
-                var $main = $(".main");
-                $(window).scroll(_.throttle(function() {
-                    if(pageSize*(page-1) < totalNumber && $(".main").offset().top + $(".main").height() - 1500 < $(window).scrollTop() + $(window).height()) {
-                        loadMorePosts();
-                    }
-                }, 250));
+                /*var $main = $(".main");
+                  $(window).scroll(_.throttle(function() {
+                  if(pageSize*(page-1) < totalNumber && $(".main").offset().top + $(".main").height() - 1500 < $(window).scrollTop() + $(window).height()) {
+                  loadMorePosts();
+                  }
+                  }, 250));*/
 
                 setTimeout(function() {
                     $(".page-" + page + " .background-image").lazyload();
@@ -240,13 +257,13 @@ define([
                     html = itemsView.render().el,
                     headerTemplate = _.template(headerTmpl),
                     headerHTML = headerTemplate({
-                        data: data,
-                        isWeb: isWeb
-                    }),
-                    footerTemplate = _.template(footerTmpl),
+                    data: dataHeader,
+                    isWeb: isWeb
+                }),
+                footerTemplate = _.template(footerTmpl),
                     footerHTML = footerTemplate({
-                        isWeb: isWeb
-                    });
+                    isWeb: isWeb
+                });
 
                 $('.element-interactive').html(html);
                 $('.main').before(headerHTML).after(footerHTML);
@@ -299,6 +316,10 @@ define([
             var app_router = new AppRouter;
 
             app_router.on('route:modalRoute', function(itemID) {
+                //console.log(items.models[itemID].attritube.headline);
+                //console.log(itemID);
+                //itemID = items.models[itemID].id;
+                console.log(itemID);
                 if(itemID !== null) {
                     lastModal = itemID;
                     modalView.addNavAtts(itemID);
@@ -316,82 +337,12 @@ define([
 
             Backbone.history.start();
         }
-
-        function loadMorePosts() { 
-            page++;
-            $.ajax({
-                url: 'http://n0ticeapis.com/2/search?noticeboard=' + noticeboard + '&pageSize=' + pageSize + '&page=' + page + '&order=' + order + votedInterestingBy,
-                jsonp: 'callback',
-                jsonpCallback: "witnessVisuals",
-                cache: true,
-                dataType: 'jsonp',
-                data: {
-                    format: "json"
-                },
-                success: function( response ) {
-                    response.results.map(function(result, i) {
-                        items.add(result);
-                    });
-
-
-                    var toAppend = '', toMove, sliced;
-
-                    // reorder collection to avoid gaps in the grid
-                    if($(document).width() > 980) {
-
-                        _.each(items.models, function(item, i) {
-                            if(i > (page-1)*pageSize - 1) {
-                                if(item.attributes.updates[0].hasOwnProperty('image')) {
-                                    if(item.attributes.updates[0].image.orientation == 'landscape') {
-                                        counter += 2;
-                                    } else {
-                                        counter += 1;
-                                    }
-                                } else {
-                                    counter += 1;
-                                }
-                                
-                                if(counter == perRow + 1) {
-                                    sliced = _.filter(items.slice(i, items.length), function (item) {
-                                        return (item.attributes.updates[0].hasOwnProperty('image') && item.attributes.updates[0].image.orientation === 'portrait') || !item.attributes.updates[0].hasOwnProperty('image');
-                                    });
-                                    if(sliced.length > 0) {
-                                        toMove = items.where({id: sliced[0].attributes.id});
-                                        items.remove(toMove);
-                                        items.add(toMove, {at: i});
-                                        counter = 0;
-                                    } else {
-                                        counter = 2;
-                                    }
-                                } else if(counter == perRow) {
-                                    counter = 0;
-                                }
-                            }
-                        });
-    
-                    }
-
-                    //end
-
-                    _.each(items.slice((page-1)*pageSize), function(val, key) {
-                        var template = _.template(itemTmpl);
-                        var itemTemplate = template({item: val.attributes, trunc: trunc, page: page});
-                        var $template = $(itemTemplate); 
-
-                        toAppend += itemTemplate;
-                    });
-
-                    $(".main").append(toAppend);
-
-                    setTimeout(function () {
-                        $(".page-" + page + " .background-image").lazyload();
-                    }, 100);
-                }
-            });
-        }
     }
 
     function trunc(text, limit) {
+        //TODO: remove temp code
+        if (text === undefined) { return; }
+
         var textSubstr = text.substr(0,limit),
             firstSentence = textSubstr.substr(0, textSubstr.lastIndexOf('.'));
 

@@ -22,19 +22,19 @@
 			</a>
 		</div>
 	</div>
-	<% if (model.updates[0].hasOwnProperty('image')) { %>
-		<div class="overlay__image overlay__image--<%= model.updates[0].image.orientation %>"/ style="background-image: url('<%= model.updates[0].image.mediumoriginalaspectdouble %>');">
-			<% if (model.updates[0].image.orientation == 'landscape') { %>
+	<% if (model.hasOwnProperty('image')) { %>
+		<div class="overlay__image overlay__image--<%= model.image.orientation %>"/ style="background-image: url('<%= model.image.src %>');">
+			<% if (model.image.orientation == 'landscape') { %>
 				<div class="expand-icon"></div>
 			<% } %>
 		</div>
 	<% } %>
-	<div class="overlay__content <% if (model.updates[0].hasOwnProperty('image')) { %>overlay__content--<%= model.updates[0].image.orientation %> <% } %>">
+	<div class="overlay__content <% if (model.hasOwnProperty('image')) { %>overlay__content--<%= model.image.orientation %> <% } %>">
 		<div class="overlay__headline">
 			<%= model.headline %>
 		</div>
 		<div class="overlay__author">
-			by <span><%= model.user.displayName %></span>
+			from <span><%= model.origin %></span>
 		</div>
 		<div class="overlay__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
@@ -43,7 +43,7 @@
 		</div>
 		<hr/>
 		<div class="overlay__body-text">
-			<%= model.updates[0].body.replace(/\n/g, "<br/>") %>
+			<%= model.body.replace(/\n/g, "<br/>") %>
 		</div>
 	</div>
 </div>

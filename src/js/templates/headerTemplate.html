@@ -1,8 +1,9 @@
 <div class="header">
 	<div class="container">
 		<h1><%= data.headline %></h1>
-		<h2><%= data.standfirst %></h2>
-		<div class="witness">Contributions from <a href="https://witness.theguardian.com/assignment/<%= data.noticeboard %>" class="witness__link"><span class="logo"><span class="logo--guardian">guardian</span>witness</span></a></div>
+		<h2><%= data.standfirst1 %></h2>
+		<h2><%= data.standfirst2 %></h2>
+		<div class="witness">Contributions from <a href="https://witness.theguardian.com/assignment/<%= data.noticeboard %>" class="witness__link"><span class="logo"><span class="logo--guardian">guardian</span> witness</span></a></div>
 		<div class="header__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href.split("#")[0]) %>" target="_blank" class="social-icon facebook" data-link-name="social facebook voices-header"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
 			<a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(data.headline + ' @guardian') %>&url=<%= encodeURIComponent(window.location.href.split("#")[0]) %>" target="_blank" data-link-name="social twitter voices-header" class="social-icon twitter"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
