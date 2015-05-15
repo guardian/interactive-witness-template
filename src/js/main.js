@@ -73,7 +73,9 @@ define([
                 $('.element-interactive').after('<div class="overlay__container"><div class="overlay__body"></div></div>');
             },
             render: function(itemID) {
-                var modalTemplate = this.template({model: items.models[itemID].toJSON(), data: dataHeader, number: items.models.length});
+                
+                var item = items.where({id: parseInt(itemID)})[0]; 
+                var modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
                 //var modalTemplate = this.template({model: this.model.models[0].toJSON(), data: dataHeader});
                 
                 $('.overlay__body').html(modalTemplate);
@@ -142,25 +144,23 @@ define([
                 this.model.unshift(items.where({ id: itemID }));
 
                 //var indexPos = _.indexOf(items.models, items.where({ id: itemID })[0]);
-                console.log(items);
-                var indexPos = items.where({id: parseInt(itemID)})[0].id; 
                 //this.model.models[0].set('position', (indexPos+1));
                 console.log(itemID);
-                console.log(indexPos);
+                //console.log(indexPos);
                 //itemID = items.models[itemID].id;
                 //console.log(itemID);
-                items.models[indexPos].set('position', (indexPos));
+                items.models[itemID].set('position', (itemID));
 
                 //if(items.at(indexPos+1)) {
                     //this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
-                if(indexPos!==items.length) {
-                    items.models[indexPos].set('nextItem', (parseInt(indexPos)+1));
+                if(itemID!==items.length) {
+                    items.models[itemID].set('nextItem', (parseInt(itemID)+1));
                 }
 
                 //if(items.at(indexPos-1)) {
                     //this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
-                if(indexPos!==0) {
-                    items.models[indexPos].set('prevItem', (parseInt(indexPos)-1));
+                if(itemID!==0) {
+                    items.models[itemID].set('prevItem', (parseInt(itemID)-1));
                 }
 
                 this.render(itemID);
