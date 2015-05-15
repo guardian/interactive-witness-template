@@ -18,7 +18,7 @@ define([
     var sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/0Aoi-l6_XQTv5dG9HNHJqdXlKeGtDb0pvUHdOWTBBUHc.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
-    page = 1,
+        page = 1,
         perRow = 4,
         counter = 0,
         dataHeader = []; 
@@ -42,18 +42,17 @@ define([
 
                 dataHeader = resp.sheets.HEADER[0];
                 dataContent.map(function(d, i) {
-                    d.id = i;
+                    
+                    d.id = i + 1;
                     d.headline = d.namefirst + " " + d.namelast;
                     d.origin = d.place + ", " + d.country;
                     d.body = d.who + "\n" + d.why;
-                    //console.log(d.imgflag, d.imgorientation);
+                    
                     if (d.imgflag === 1) {
                         var img = new Image();
                         img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
-                        //img.onload = function() {
                         img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
                         d.image = img;
-                        //};
                     }
                     
                     return d;
@@ -145,22 +144,22 @@ define([
 
                 //var indexPos = _.indexOf(items.models, items.where({ id: itemID })[0]);
                 //this.model.models[0].set('position', (indexPos+1));
-                console.log(itemID);
                 //console.log(indexPos);
                 //itemID = items.models[itemID].id;
-                //console.log(itemID);
-                items.models[itemID].set('position', (itemID));
+                var item = items.where({id: parseInt(itemID)})[0]; 
+                item.set('position', itemID);
+                console.log(itemID);
 
                 //if(items.at(indexPos+1)) {
                     //this.model.models[0].set('nextItem', items.at(indexPos+1).attributes.id.substring(7));
                 if(itemID!==items.length) {
-                    items.models[itemID].set('nextItem', (parseInt(itemID)+1));
+                    item.set('nextItem', (parseInt(itemID)+1));
                 }
 
                 //if(items.at(indexPos-1)) {
                     //this.model.models[0].set('prevItem', items.at(indexPos-1).attributes.id.substring(7));
                 if(itemID!==0) {
-                    items.models[itemID].set('prevItem', (parseInt(itemID)-1));
+                    item.set('prevItem', (parseInt(itemID)-1));
                 }
 
                 this.render(itemID);
@@ -319,7 +318,6 @@ define([
                 //console.log(items.models[itemID].attritube.headline);
                 //console.log(itemID);
                 //itemID = items.models[itemID].id;
-                console.log(itemID);
                 if(itemID !== null) {
                     lastModal = itemID;
                     modalView.addNavAtts(itemID);
