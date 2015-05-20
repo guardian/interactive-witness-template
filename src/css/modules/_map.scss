@@ -1,0 +1,31 @@
+.map {
+    
+    color: #333; //n1
+    font-size: 12px;
+    font-family: $f-sans-serif-text;
+
+    .path-voronoi {
+        fill: transparent;
+        //stroke: lightblue;
+        //stroke-width: 1px;
+    }
+    .path-map {
+        stroke: white;
+        stroke-width: 0.5px;
+        fill: #bdbdbd; //n3
+    }
+    .path-map-hovered {
+        fill: #767676; //n2
+    }
+
+    .pin {
+        fill: #333;
+    }
+    .pin-hovered {
+        fill: #4bc6df;
+    }
+
+    .hide{ 
+        display: none; 
+    }
+}

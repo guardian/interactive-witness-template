@@ -1,6 +1,8 @@
 define([
     'backbone',
     'lazyload',
+    'map',
+    'json!data/world-topo.json',
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',
     'text!templates/headerTemplate.html',
@@ -8,6 +10,8 @@ define([
 ], function(
     backbone,
     lazyload,
+    map,
+    mapJson,
     itemTmpl,
     modalTmpl,
     headerTmpl,
@@ -15,7 +19,7 @@ define([
 ) {
     'use strict';
 
-    var sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/0Aoi-l6_XQTv5dG9HNHJqdXlKeGtDb0pvUHdOWTBBUHc.json',
+    var sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/1hEvP1-VmVj0RQwt1G5jyGTh5WzXE9RwzE5t2PEK2YoA.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -45,7 +49,7 @@ define([
                     
                     d.id = i + 1;
                     d.headline = d.namefirst + " " + d.namelast;
-                    d.origin = d.place + ", " + d.country;
+                    d.origin = ((d.place !== "") ? (d.place + ", ") : "") +  d.country;
                     d.body = d.who + "\n\n" + d.why;
                     
                     if (d.imgflag === 1) {
@@ -297,7 +301,20 @@ define([
                 }, 250));
 
                 // $('div.background-image').lazyload();
-
+               
+                // map
+                var signerData = items.models.map(function(d) {
+                    var s = d.attributes;
+                    return {
+                        id: s.id,
+                        name: s.headline,
+                        origin: s.origin,
+                        countrycode: s.countrycode,
+                        coord: [s.longitude, s.latitude]
+                    };
+                }); 
+                map.render(mapJson, signerData);
+                
                 return this;
             },
 
