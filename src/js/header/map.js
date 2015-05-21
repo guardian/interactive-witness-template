@@ -93,7 +93,7 @@ define([
             .enter().append("circle")
             .attr("class", function(d, i) { return "pin item-" + i; })
             .attr("r", 3);
-        }
+       }
         
         function draw(svgData) {
 
@@ -125,7 +125,7 @@ define([
             svgPins.attr("transform", function(d, i) {
                 return "translate(" + points[i] + ")";
             });
- 
+
             // voronoi: for mouse event
             svgVoronoi = svg.selectAll(".path-voronoi")
             .data(voronoi(points));
@@ -150,7 +150,7 @@ define([
             })
             .on("mouseenter", function(d, i) {
                 onMouseEnter(signerData[i], i, points[i][0], points[i][1]);
-            })
+           })
             .on("click", function(d, i) {
                 window.location.hash = "#item-" + signerData[i].id;
             });        
@@ -158,8 +158,7 @@ define([
             // exit
             svgVoronoi.exit().remove();
         }
-
-
+        
         return {
             init: init,
             draw: draw
