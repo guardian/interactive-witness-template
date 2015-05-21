@@ -48,17 +48,19 @@ define([
                 dataContent.map(function(d, i) {
                     
                     d.id = i + 1;
-                    d.headline = d.namefirst + " " + d.namelast;
                     d.origin = ((d.place !== "") ? (d.place + ", ") : "") +  d.country;
+                    d.headline = d.namefirst + " " + d.namelast;
                     d.body = d.who + "\n\n" + d.why;
                     
+                    d.city = d.origin.split(",")[0];
+                    d.coord = [d.longitude, d.latitude];
+                   
                     if (d.imgflag === 1) {
-                        var img = new Image();
+                        var img = {};
                         img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
                         img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
                         d.image = img;
                     }
-                    
                     return d;
                 });
 
@@ -307,10 +309,11 @@ define([
                     var s = d.attributes;
                     return {
                         id: s.id,
-                        name: s.headline,
-                        origin: s.origin,
+                        name: s.namefirst,
+                        city: s.origin, 
                         countrycode: s.countrycode,
-                        coord: [s.longitude, s.latitude]
+                        coord: s.coord,
+                        image: (s.imgflag !== 0) ? s.image.src : undefined
                     };
                 }); 
                 map.render(mapJson, signerData);

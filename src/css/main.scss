@@ -639,7 +639,7 @@ figure {
 		width: 100%;
 
 		@include mq(tablet) {
-			padding: $gs-gutter*4 $gs-gutter*2 $gs-gutter*3;
+			padding: $gs-gutter*3 $gs-gutter*2 $gs-gutter*2;
 			width: 740px;
 		}
 
@@ -672,11 +672,11 @@ figure {
 
 		h2 {
 			color: #767676;
-			font-size: 18px;//20px;
-			line-height: 1.75em;//32px;
+			font-size: 16px;//20px;
+			line-height: 1.6em;//32px;
 			font-weight: 200;
 			margin: 0;
-			margin-top: 36px;
+			margin-top: 30px;
 			max-width: 780px;
 
 			.link {
