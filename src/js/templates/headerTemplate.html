@@ -1,7 +1,8 @@
 <div class="header">
 	<div class="container">
 		<h1><%= data.headline %></h1>
-        <h2><%= data.standfirst.replace(/\n\n/g, "<br/><br/>") %></h2>
+        <h2 class="js-standfirst"><%= data.standfirst1 %></h2>
+        <h2><%= data.standfirst2 %></h2>
         <div class="witness">Contributions from <%= data.contributions %></div>
 		<div class="header__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href.split("#")[0]) %>" target="_blank" class="social-icon facebook" data-link-name="social facebook voices-header"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>

@@ -1,7 +1,8 @@
 define([
     'backbone',
     'lazyload',
-    'map',
+    'header/standfirst',
+    'header/map',
     'json!data/world-topo.json',
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',
@@ -10,6 +11,7 @@ define([
 ], function(
     backbone,
     lazyload,
+    standfirst,
     map,
     mapJson,
     itemTmpl,
@@ -25,7 +27,8 @@ define([
         page = 1,
         perRow = 4,
         counter = 0,
-        dataHeader = []; 
+        dataHeader = [], 
+        dataLinks = []; 
 
     function init() {
         app();
@@ -45,6 +48,7 @@ define([
                 var dataContent = resp.sheets.CONTENT;
 
                 dataHeader = resp.sheets.HEADER[0];
+                dataLinks = resp.sheets.LINKS;
                 dataContent.map(function(d, i) {
                     
                     d.id = i + 1;
@@ -279,13 +283,13 @@ define([
                     html = itemsView.render().el,
                     headerTemplate = _.template(headerTmpl),
                     headerHTML = headerTemplate({
-                    data: dataHeader,
-                    isWeb: isWeb
-                }),
-                footerTemplate = _.template(footerTmpl),
-                    footerHTML = footerTemplate({
-                    isWeb: isWeb
-                });
+                        data: dataHeader,
+                        isWeb: isWeb
+                    }),
+                    footerTemplate = _.template(footerTmpl),
+                        footerHTML = footerTemplate({
+                        isWeb: isWeb
+                    });
 
                 $('.element-interactive').html(html);
                 $('.main').before(headerHTML).after(footerHTML);
@@ -304,7 +308,11 @@ define([
 
                 // $('div.background-image').lazyload();
                
-                // map
+                // add links to standfirst
+                var standfirstText = dataHeader.standfirst1; 
+                standfirst.render(standfirstText, dataLinks);
+
+                // add map
                 var signerData = items.models.map(function(d) {
                     var s = d.attributes;
                     return {

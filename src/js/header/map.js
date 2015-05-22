@@ -51,7 +51,7 @@ define([
         //d3.select(".preview").classed("d-n", true);
     } 
     
-    function onMouseOver(d, i, ptX, ptY) {
+    function onMouseEnter(d, i, ptX, ptY) {
         document.querySelector(".js-name").textContent = d.name;
         document.querySelector(".js-city").textContent = d.city;
         document.querySelector(".js-img").src = (d.image === undefined) ? "" : d.image;
@@ -63,7 +63,6 @@ define([
         .classed("path-map-hovered", true);       
         
         // preview           
-        console.log(i, ptX, ptY);
         d3.select(".preview")
         .classed("d-n", false) 
         .style("top", (ptY - 32) + "px")
@@ -136,8 +135,8 @@ define([
             .attr("d", function(d) {
                 return "M" + d.join("L") + "Z";
             })
-            .on("mouseover", function(d, i) {
-                onMouseOver(signerData[i], i, points[i][0], points[i][1]);
+            .on("mouseenter", function(d, i) {
+                onMouseEnter(signerData[i], i, points[i][0], points[i][1]);
             });
 
             // create new
@@ -149,8 +148,8 @@ define([
             .on("mouseleave", function(d, i) {
                 onMouseLeave(signerData[i], i);
             })
-            .on("mouseover", function(d, i) {
-                onMouseOver(signerData[i], i, points[i][0], points[i][1]);
+            .on("mouseenter", function(d, i) {
+                onMouseEnter(signerData[i], i, points[i][0], points[i][1]);
             })
             .on("click", function(d, i) {
                 window.location.hash = "#item-" + signerData[i].id;
