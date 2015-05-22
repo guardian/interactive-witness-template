@@ -3,11 +3,11 @@ define([
 ) {
   'use strict';
 
-  function render(standfirstText, linkData) {
+  function render(standfirstText, linkData, className) {
     
     
     var texts, nText, nLink,
-        el = document.querySelector(".js-standfirst"),
+        el = document.querySelector("." + className),
         sf = standfirstText;
 
     el.textContent = "";

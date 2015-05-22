@@ -28,7 +28,8 @@ define([
         perRow = 4,
         counter = 0,
         dataHeader = [], 
-        dataLinks = []; 
+        dataLinks = [],
+        flag = { isMap: false }; 
 
     function init() {
         app();
@@ -309,8 +310,16 @@ define([
                 // $('div.background-image').lazyload();
                
                 // add links to standfirst
-                var standfirstText = dataHeader.standfirst1; 
-                standfirst.render(standfirstText, dataLinks);
+                var sf1 = dataHeader.standfirst1,
+                    sf2 = dataHeader.standfirst2;
+
+                var getLinks = function(text) {
+                        return dataLinks.filter(function(d) {
+                            return text.indexOf(d.key) !== -1; 
+                        });
+                    }; 
+                standfirst.render(sf1, getLinks(sf1), "js-standfirst1");
+                standfirst.render(sf2, getLinks(sf2), "js-standfirst2");
 
                 // add map
                 var signerData = items.models.map(function(d) {
@@ -324,7 +333,7 @@ define([
                         image: (s.imgflag !== 0) ? s.image.src : undefined
                     };
                 }); 
-                map.render(mapJson, signerData);
+                map.render(mapJson, signerData, flag);
                 
                 return this;
             },
@@ -372,10 +381,15 @@ define([
             app_router.on('route:closeRoute', function() {
                 $('.overlay__container').removeClass('overlay__container--show');
                 $('html').removeClass('dropdown-open');
-
-                if(lastModal) {
-                    window.scrollTo(0,$('#item-' + lastModal + '').offset().top);
+                
+                // scroll to map or card list
+                if(flag.isMap) {
+                    window.scrollTo(0, $('.header__social').offset().top);
                 }
+                else if(lastModal) {
+                    window.scrollTo(0, $('#item-' + lastModal + '').offset().top);
+                }
+                flag.isMap = false;
             });
 
             Backbone.history.start();

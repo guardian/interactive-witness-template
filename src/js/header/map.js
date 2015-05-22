@@ -95,7 +95,7 @@ define([
             .attr("r", 3);
        }
         
-        function draw(svgData) {
+        function draw(svgData, flag) {
 
             var proj = d3.geo.mercator().scale(svgData.s)
                          .translate([svgData.w/2.1, svgData.h/1.8]),
@@ -153,6 +153,7 @@ define([
            })
             .on("click", function(d, i) {
                 window.location.hash = "#item-" + signerData[i].id;
+                flag.isMap = true;
             });        
  
             // exit
@@ -166,7 +167,7 @@ define([
     }
 
     var type = 0;
-    function render(mapJson, signerData) {
+    function render(mapJson, signerData, flag) {
 
         var map = createSvg(mapJson, signerData);
         map.init();
@@ -187,11 +188,12 @@ define([
                 //console.log("redraw:", data.type);
 
                 if (size.width < 980) {
-                    //console.log("empty drawing");
+                    //console.log("hide interactive map");
+                    //TODO: show staic map?
                     d3.select(".map svg").classed("d-n", true);
                 } else {
                     d3.select(".map svg").classed("d-n", false);
-                    map.draw(data);
+                    map.draw(data, flag);
                 }
             }, 100);
         }
