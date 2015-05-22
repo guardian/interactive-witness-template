@@ -1,7 +1,7 @@
 define([
     'backbone',
     'lazyload',
-    'header/standfirst',
+    'header/addLinkToText',
     'header/map',
     'json!data/world-topo.json',
     'text!templates/itemTemplate.html',
@@ -11,7 +11,7 @@ define([
 ], function(
     backbone,
     lazyload,
-    standfirst,
+    addLinkToText,
     map,
     mapJson,
     itemTmpl,
@@ -54,11 +54,13 @@ define([
                     
                     d.id = i + 1;
                     d.origin = ((d.place !== "") ? (d.place + ", ") : "") +  d.country;
-                    d.headline = d.namefirst + " " + d.namelast;
-                    d.body = d.who + "\n\n" + d.why;
-                    
                     d.city = d.origin.split(",")[0];
                     d.coord = [d.longitude, d.latitude];
+                    
+                    d.headline = d.namefirst + " " + d.namelast;
+                    //d.body = d.who + "\n\n" + d.why;
+                    //d.body = { who: d.who, why: d.why };
+                    
                    
                     if (d.imgflag === 1) {
                         var img = {};
@@ -254,6 +256,8 @@ define([
                 _.each(this.model.models, function(item){
                     //console.log(this.model);
                     //console.log(item.toJSON());
+                    var i = item.attributes;
+                    item.attributes.body =  i.who + "\n\n" + i.why;
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;
@@ -310,27 +314,27 @@ define([
                 // $('div.background-image').lazyload();
                
                 // add links to standfirst
-                var sf1 = dataHeader.standfirst1,
-                    sf2 = dataHeader.standfirst2;
+                var text1 = dataHeader.standfirst,
+                    text2 = dataHeader.contribution;
 
                 var getLinks = function(text) {
                         return dataLinks.filter(function(d) {
                             return text.indexOf(d.key) !== -1; 
                         });
                     }; 
-                standfirst.render(sf1, getLinks(sf1), "js-standfirst1");
-                standfirst.render(sf2, getLinks(sf2), "js-standfirst2");
+                addLinkToText.render(text1, getLinks(text1), "js-standfirst");
+                addLinkToText.render(text2, getLinks(text2), "js-contribution");
 
                 // add map
                 var signerData = items.models.map(function(d) {
-                    var s = d.attributes;
+                    var data = d.attributes;
                     return {
-                        id: s.id,
-                        name: s.namefirst,
-                        city: s.origin, 
-                        countrycode: s.countrycode,
-                        coord: s.coord,
-                        image: (s.imgflag !== 0) ? s.image.src : undefined
+                        id: data.id,
+                        name: data.namefirst,
+                        city: data.origin, 
+                        countrycode: data.countrycode,
+                        coord: data.coord,
+                        image: (data.imgflag !== 0) ? data.image.src.slice(0,-4) + "_s.jpg" : undefined
                     };
                 }); 
                 map.render(mapJson, signerData, flag);

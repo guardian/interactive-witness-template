@@ -408,6 +408,12 @@ figure {
 	}
 }
 
+.overlay__body-header {
+    color: #bdbdbd;
+    font-family: $f-serif-headline;
+    font-weight: bold;
+    margin-top: 30px;
+}
 .overlay__body-text {
 	@include mq(desktop) {
 		margin: auto;
@@ -453,11 +459,13 @@ figure {
 	border-radius: 16px;
 	display: inline-block;
 	margin-right: 1px;
+    //background-color: #bdbdbd; 
 
 	&.facebook {
 		background-color: #3067a3;
 		&:hover {
 			background-color: darken(#3067a3, 10%);
+		    //background-color: #3067a3;
 		}
 	}
 
@@ -465,6 +473,7 @@ figure {
 		background-color: #03b3ee;
 		&:hover {
 			background-color: darken(#03b3ee, 10%);
+		    //background-color: #03b3ee;
 		}
 	}
 
@@ -472,6 +481,7 @@ figure {
 		background-color: #767676;
 		&:hover {
 			background-color: darken(#767676, 10%);
+		    //background-color: #767676;
 		}
 	}
 }

@@ -3,12 +3,12 @@ define([
 ) {
   'use strict';
 
-  function render(standfirstText, linkData, className) {
+  function render(text, linkData, className) {
     
     
     var texts, nText, nLink,
         el = document.querySelector("." + className),
-        sf = standfirstText;
+        sf = text;
 
     el.textContent = "";
     linkData.forEach(function(d) {

@@ -76,21 +76,20 @@
         pointer-events: none;
     }
     .preview-img {
-        width: 33%;
-        height: 100%;
+        width: $preview-h;
+        height: $preview-h;
         float: left;
         overflow: hidden;
+        box-sizing: border-box;
         img {
         display: block;
-        width: 150%;
-        margin-top: -5%;
-        margin-left: -25%;
+        width: 100%;
         }
     }
     .preview-text {
         background-color: rgba(255, 255, 255, 0.75);
-        width: calc(100% - 33%);
-        height: 100%;
+        width: calc(100% - #{$preview-h});
+        height: $preview-h;
         padding: 13px 5px 0 5px;
         float: right;
         box-sizing: border-box;

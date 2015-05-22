@@ -54,7 +54,13 @@ define([
     function onMouseEnter(d, i, ptX, ptY) {
         document.querySelector(".js-name").textContent = d.name;
         document.querySelector(".js-city").textContent = d.city;
-        document.querySelector(".js-img").src = (d.image === undefined) ? "" : d.image;
+        // image
+        var img = document.querySelector(".js-img");
+        if (d.image === undefined) {
+            img.src = "@@assetPath@@/imgs/witness/empty.png";
+        } else {
+            img.src = d.image;
+        }
     
         // highlight
         d3.select(".item-" + i)
