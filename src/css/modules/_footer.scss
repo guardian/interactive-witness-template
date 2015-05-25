@@ -1,0 +1,64 @@
+// Guardian Footer
+
+footer {
+    background:#424242;
+
+    .really-serious-copyright {
+		font-size: 12px;
+		color:#dcdcdc;
+		font-family:'Guardian Text Sans Web','Agate Sans',sans-serif;
+		margin:0 10px 20px;
+		padding-top:10px;
+    }
+
+    .footer-content {
+    	padding-bottom: 1px;
+		.colophon {
+			column-count: 2;
+			padding: 0;
+			margin: 20px 10px 10px;
+			li {
+				padding: 0;
+				margin: 0;
+			}
+
+			@include mq(tablet) {
+				column-count: 3;
+			}
+
+			@include mq(wide) {
+				column-count: 4;
+			}
+		}
+		a {
+			color: gainsboro;
+			text-decoration: none;
+			padding-bottom: 12px;
+			font-size: 14px;
+			line-height: 22px;
+			font-weight: 500;
+			display: inline-block;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+.footer-sticky {
+    @extend .header;
+    background-color: white;
+    .f-h2 {
+        max-width: 100%;
+        margin: 20px 0 15px 0;
+        padding-left: 10px;
+        @include mq(desktop) {
+        font-size: 1.5em;
+        }
+    }
+}
+.sticky {
+    @extend .pos-f;
+    bottom: 0;
+    box-shadow: -3px 6px 18px dimgrey;
+}

@@ -83,7 +83,7 @@ define([
         var svg, svgMap, svgPins, svgVoronoi;
         
         function init() {
-            svg  = d3.select(".map").append("svg");
+            svg  = d3.select(".map").append("svg").classed("d-n", true);
             
             // map
             svgMap = svg.selectAll(".path-map")
@@ -192,8 +192,11 @@ define([
                 if (type === data.type) { return; }
                 type = data.type;
                 //console.log("redraw:", data.type);
+                
+                var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                //console.log(isMobile);
 
-                if (size.width < 980) {
+                if (size.width < 980 || isMobile) {
                     //console.log("hide interactive map");
                     //TODO: show staic map?
                     d3.select(".map svg").classed("d-n", true);

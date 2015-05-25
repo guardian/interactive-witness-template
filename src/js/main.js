@@ -2,6 +2,7 @@ define([
     'backbone',
     'lazyload',
     'header/addLinkToText',
+    'header/stickElement',
     'header/map',
     'json!data/world-topo.json',
     'text!templates/itemTemplate.html',
@@ -12,6 +13,7 @@ define([
     backbone,
     lazyload,
     addLinkToText,
+    stickElement,
     map,
     mapJson,
     itemTmpl,
@@ -61,7 +63,6 @@ define([
                     //d.body = d.who + "\n\n" + d.why;
                     //d.body = { who: d.who, why: d.why };
                     
-                   
                     if (d.imgflag === 1) {
                         var img = {};
                         img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
@@ -87,12 +88,21 @@ define([
             render: function(itemID) {
                 if (itemID < 1) { itemID = items.length; }
                 else if (itemID > items.length) { itemID = 1; }
-                //console.log(itemID, "[render]")
-
-                var item = items.where({id: parseInt(itemID)})[0],
-                    modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
-                //var modalTemplate = this.template({model: this.model.models[0].toJSON(), data: dataHeader});
+                //console.log(itemID, "[render]");
                 
+                var item = items.where({id: parseInt(itemID)})[0];
+                
+                // flag = 2: add low resolution images to individual pages
+                var d = item.attributes;
+                if (d.imgflag === 2) {
+                    var img = {};
+                    img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
+                    img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
+                    d.image = img;
+                }
+                
+                var modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
+
                 $('.overlay__body').html(modalTemplate);
                 $('body').scrollTop(0);
                 $('.overlay__container').addClass('overlay__container--show');
@@ -292,7 +302,8 @@ define([
                         isWeb: isWeb
                     }),
                     footerTemplate = _.template(footerTmpl),
-                        footerHTML = footerTemplate({
+                    footerHTML = footerTemplate({
+                        data: dataHeader,
                         isWeb: isWeb
                     });
 
@@ -323,22 +334,25 @@ define([
                         });
                     }; 
                 addLinkToText.render(text1, getLinks(text1), "js-standfirst");
-                addLinkToText.render(text2, getLinks(text2), "js-contribution");
+                //addLinkToText.render(text2, getLinks(text2), "js-contribution");
 
                 // add map
                 var signerData = items.models.map(function(d) {
-                    var data = d.attributes;
+                    var data = d.attributes,
+                        path = "@@assetPath@@/imgs/witness/" + data.headline.replace(/\s|-/g, '') + "_s.jpg";
                     return {
                         id: data.id,
                         name: data.namefirst,
                         city: data.origin, 
                         countrycode: data.countrycode,
                         coord: data.coord,
-                        image: (data.imgflag !== 0) ? data.image.src.slice(0,-4) + "_s.jpg" : undefined
+                        image: (data.imgflag !== 0) ? path : undefined
                     };
                 }); 
                 map.render(mapJson, signerData, flag);
                 
+                stickElement();
+
                 return this;
             },
 
@@ -388,7 +402,7 @@ define([
                 
                 // scroll to map or card list
                 if(flag.isMap) {
-                    window.scrollTo(0, $('.header__social').offset().top);
+                    window.scrollTo(0, $('.js-contribution').offset().top);
                 }
                 else if(lastModal) {
                     window.scrollTo(0, $('#item-' + lastModal + '').offset().top);
