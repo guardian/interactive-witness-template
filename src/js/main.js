@@ -1,9 +1,9 @@
 define([
     'backbone',
     'lazyload',
-    'header/addLinkToText',
-    'header/stickElement',
-    'header/map',
+    'partials/standfirstLinks',
+    'partials/footerStickElement',
+    'partials/map',
     'json!data/world-topo.json',
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',

@@ -54,10 +54,10 @@
         fill: #767676;  //neutral-2
     }
 
-    .pin {
+    .circle {
         fill: #333;
     }
-    .pin-hovered {
+    .circle-hovered {
         fill: $blue;
     }
 
@@ -67,6 +67,7 @@
         top: 0;
         left: 0;
     }
+
     .preview {
         width: $preview-w;
         height: $preview-h;
@@ -76,19 +77,19 @@
         width: $preview-h;
         height: $preview-h;
         float: left;
-        overflow: hidden;
         box-sizing: border-box;
         img {
         display: block;
         width: 100%;
+        height: 100%;
         }
     }
     .preview-text {
         background-color: rgba(255, 255, 255, 0.75);
-        width: calc(100% - #{$preview-h});
+        width: calc(#{$preview-h} * 2);
         height: $preview-h;
-        padding: 13px 5px 0 5px;
         float: right;
         box-sizing: border-box;
+        padding: 13px 5px 0 5px;
     }
 }

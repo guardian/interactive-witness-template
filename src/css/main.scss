@@ -133,7 +133,7 @@ figure {
     border-radius: 60px;
     text-align: center;
     border: 1px solid #ddd;
-    z-index: 1000;
+    z-index: 10;
     opacity: 0.6;
     transition: bottom 0.25s, border-color 0.25s, opacity 0.25s;
 
@@ -200,8 +200,7 @@ a,p a,li a{
     text-shadow: none;
 }
 
-body,
-.interactive {
+body {
     margin: 0 !important;
 }
 

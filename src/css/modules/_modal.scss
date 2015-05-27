@@ -14,8 +14,8 @@
 	-webkit-overflow-scrolling: touch;
 	-webkit-animation-duration: 0.25s;
     -webkit-animation-name: fadeInFromNone;
-    z-index: 99999;
     padding-bottom: $gs-baseline*2;
+    z-index: 100;
 
     @include mq($until: desktop) {
     	position: absolute;
@@ -235,7 +235,6 @@
 			padding: 0;
 		}
 	}
-	padding-bottom: $gs-baseline*3;
 }
 
 .overlay__progress {
@@ -426,8 +425,9 @@
 	font-size: 22px;
 	font-family: "Guardian Egyptian Web","Egyptian Display",Georgia,serif;
 	box-sizing: border-box;
+    z-index: 1;
 
-	@include mq($until: tablet) {
+    @include mq($until: tablet) {
 		position: fixed;
 		border-top: 0;
 		border-bottom: 1px solid #dcdcdc;

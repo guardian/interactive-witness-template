@@ -44,7 +44,7 @@ define([
     function onMouseLeave(d, i) {
         // highlight
         d3.select(".item-" + i)
-        .classed("pin-hovered", false);
+        .classed("circle-hovered", false);
         d3.select(".code-" + d.countrycode)
         .classed("path-map-hovered", false);       
         // preview
@@ -64,7 +64,7 @@ define([
     
         // highlight
         d3.select(".item-" + i)
-        .classed("pin-hovered", true);
+        .classed("circle-hovered", true);
         d3.select(".code-" + d.countrycode)
         .classed("path-map-hovered", true);       
         
@@ -97,7 +97,7 @@ define([
             svgPins = svg.selectAll("circle")
             .data(signerData)
             .enter().append("circle")
-            .attr("class", function(d, i) { return "pin item-" + i; })
+            .attr("class", function(d, i) { return "circle item-" + i; })
             .attr("r", 3);
        }
         

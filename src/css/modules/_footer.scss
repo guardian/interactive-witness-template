@@ -46,6 +46,8 @@ footer {
 }
 
 .footer-sticky {
+    // sticky element is using 
+    // header layout
     @extend .header;
     background-color: white;
     .f-h2 {
