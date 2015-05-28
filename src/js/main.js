@@ -49,7 +49,6 @@ define([
             },
             parse: function(resp) {
                 var dataContent = resp.sheets.CONTENT;
-
                 dataHeader = resp.sheets.HEADER[0];
                 dataLinks = resp.sheets.LINKS;
                 dataContent.map(function(d, i) {
@@ -60,18 +59,23 @@ define([
                     d.coord = [d.longitude, d.latitude];
                     
                     d.headline = d.namefirst + " " + d.namelast;
-                    //d.body = d.who + "\n\n" + d.why;
-                    //d.body = { who: d.who, why: d.why };
                     
+                    
+                    // img_flag 0 => no image 
+                    // img_flag 1 => image uses for item page and map/grid views
+                    // img_flag 2 => image uses for item page and map view
+                    if (d.imgflag !== 0 && d.imgsrc === "") {
+                        d.imgsrc = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
+                    }                   
                     if (d.imgflag === 1) {
                         var img = {};
-                        img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
+                        
+                        img.src = d.imgsrc;
                         img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
                         d.image = img;
                     }
                     return d;
                 });
-
                 return dataContent;
             }
         }),
@@ -92,15 +96,15 @@ define([
                 
                 var item = items.where({id: parseInt(itemID)})[0];
                 
-                // flag = 2: add low resolution images to individual pages
+                // img_flag 2 => image uses for item page and map view
                 var d = item.attributes;
                 if (d.imgflag === 2) {
                     var img = {};
-                    img.src = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
+                    img.src = d.imgsrc;
                     img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
                     d.image = img;
                 }
-                
+                //console.log(item);                
                 var modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
 
                 $('.overlay__body').html(modalTemplate);
@@ -325,8 +329,7 @@ define([
                 // $('div.background-image').lazyload();
                
                 // add links to standfirst
-                var text1 = dataHeader.standfirst,
-                    text2 = dataHeader.contribution;
+                var text1 = dataHeader.standfirst;
 
                 var getLinks = function(text) {
                         return dataLinks.filter(function(d) {
@@ -334,12 +337,11 @@ define([
                         });
                     }; 
                 addLinkToText.render(text1, getLinks(text1), "js-standfirst");
-                //addLinkToText.render(text2, getLinks(text2), "js-contribution");
 
                 // add map
                 var signerData = items.models.map(function(d) {
                     var data = d.attributes,
-                        path = "@@assetPath@@/imgs/witness/" + data.headline.replace(/\s|-/g, '') + "_s.jpg";
+                        path = data.imgsrcsmall !== "" ? data.imgsrcsmall : data.imgsrc.replace(".jpg", "_s.jpg");
                     return {
                         id: data.id,
                         name: data.namefirst,

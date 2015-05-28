@@ -139,6 +139,7 @@ define([
             // update
             svgVoronoi
             .attr("d", function(d) {
+                if(d === undefined) { return; }
                 return "M" + d.join("L") + "Z";
             })
             .on("mouseenter", function(d, i) {
@@ -149,6 +150,7 @@ define([
             svgVoronoi.enter().append("path")
             .attr("class", "path-voronoi")
             .attr("d", function(d) {
+                if(d === undefined) { return; }
                 return "M" + d.join("L") + "Z";
             })
             .on("mouseleave", function(d, i) {
