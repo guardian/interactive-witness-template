@@ -31,7 +31,8 @@
 			<%= model.headline %>
 		</div>
 		<div class="overlay__author">
-			from <span><%= model.origin %></span>
+            Occupation <span><%= model.profession %></span>, 
+            says <span class="<%= model.isEuro %>"><%= model.isEuro %></span> to eurozone
 		</div>
 		<div class="overlay__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
@@ -39,17 +40,10 @@
 			<a href="mailto:?subject=<%= encodeURIComponent(data.headline) %>&body=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon email" data-link-name="social email voices-modal"><img src="@@assetPath@@/imgs/share-email.svg"/></a>
 		</div>
 		<hr/>
-	    <% if (model.who) { %>
-            <div class="overlay__body-header">WHO I AM</div>
+	    <% if (model.contribution) { %>
 		    <div class="overlay__body-text">
-			    <%= model.who.replace(/\n/g, "<br/>") %>
+                <%= model.contribution.replace(/\n/g, "<br/>") %>
             </div>
 	    <% } %>
-	    <% if (model.why) { %>
-            <div class="overlay__body-header">WHY I CARE</div>
-		    <div class="overlay__body-text">
-			    <%= model.why.replace(/\n/g, "<br/>") %>
-            </div>
-	    <% } %>
-	</div>
+    </div>
 </div>

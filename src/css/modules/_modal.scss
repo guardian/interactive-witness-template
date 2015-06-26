@@ -316,6 +316,11 @@
 	span {
 		font-weight: 700;
 	}
+    
+    .yes { border-bottom: 3px solid $c-yes; }
+    .no  { border-bottom: 3px solid $c-no; }
+    //.yes { text-transform: capitalize; color: $c-yes; }
+	//.no  { text-transform: capitalize; color: $c-no; }
 
 	@include mq(desktop) {
 		width: 580px;

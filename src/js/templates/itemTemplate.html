@@ -1,6 +1,6 @@
 <% if (item.hasOwnProperty('image')) { %>
     <% if (item.image.orientation === 'portrait') { %>
-            <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--portrait item--thin page-<%= page %>">
+    <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--portrait item--thin page-<%= page %> item-<%= item.isEuro %>">
                 <div class="wrapper">
                     <div class="image__container">
                         <div class="background-image portrait" data-original="<%= item.image.src %>"></div>
@@ -12,7 +12,7 @@
 
             </a>
     <% } else if (item.image.orientation === 'landscape') { %>
-            <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--landscape page-<%= page %>">
+            <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--landscape page-<%= page %> item-<%= item.isEuro %>">
                 <div class="wrapper">
                     <div class="image__container">
                         <div class="background-image landscape" data-original="<%= item.image.src %>"></div>
@@ -22,7 +22,7 @@
             </a>
     <% } %>
 <% } else { %>
-    <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--no-image item--thin page-<%= page %>">
+    <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--no-image item--thin page-<%= page %> item-<%= item.isEuro %>">
         <div class="wrapper">
             <div class="quote"><span><%= trunc(item.body, 200) %></span></div>
             <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>

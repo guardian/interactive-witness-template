@@ -1,10 +1,7 @@
 define([
     'backbone',
     'lazyload',
-    'partials/standfirstLinks',
     'partials/footerStickElement',
-    'partials/map',
-    'json!data/world-topo.json',
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',
     'text!templates/headerTemplate.html',
@@ -12,10 +9,7 @@ define([
 ], function(
     backbone,
     lazyload,
-    addLinkToText,
     stickElement,
-    map,
-    mapJson,
     itemTmpl,
     modalTmpl,
     headerTmpl,
@@ -23,14 +17,13 @@ define([
 ) {
     'use strict';
 
-    var sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/1hEvP1-VmVj0RQwt1G5jyGTh5WzXE9RwzE5t2PEK2YoA.json',
+    var sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/19npo44gfmljeR4Z2Z7JW1HSk6Gg7EKq5-F9N6eSIg70.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
         perRow = 4,
         counter = 0,
         dataHeader = [], 
-        dataLinks = [],
         flag = { isMap: false }; 
 
     function init() {
@@ -50,23 +43,15 @@ define([
             parse: function(resp) {
                 var dataContent = resp.sheets.CONTENT;
                 dataHeader = resp.sheets.HEADER[0];
-                dataLinks = resp.sheets.LINKS;
+                
                 dataContent.map(function(d, i) {
                     
                     d.id = i + 1;
-                    d.origin = ((d.place !== "") ? (d.place + ", ") : "") +  d.country;
-                    d.city = d.origin.split(",")[0];
-                    d.coord = [d.longitude, d.latitude];
-                    
-                    d.headline = d.namefirst + " " + d.namelast;
-                    
-                    
+                    d.headline = d.name;
+                    d.isEuro = (d.eurozone === "Yes") ? "yes" : "no";
+
                     // img_flag 0 => no image 
-                    // img_flag 1 => image uses for item page and map/grid views
-                    // img_flag 2 => image uses for item page and map view
-                    if (d.imgflag !== 0 && d.imgsrc === "") {
-                        d.imgsrc = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
-                    }                   
+                    // img_flag 1 => image with source and orientation
                     if (d.imgflag === 1) {
                         var img = {};
                         
@@ -74,8 +59,10 @@ define([
                         img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
                         d.image = img;
                     }
+                    
                     return d;
                 });
+                //console.log(dataContent);
                 return dataContent;
             }
         }),
@@ -96,14 +83,6 @@ define([
                 
                 var item = items.where({id: parseInt(itemID)})[0];
                 
-                // img_flag 2 => image uses for item page and map view
-                var d = item.attributes;
-                if (d.imgflag === 2) {
-                    var img = {};
-                    img.src = d.imgsrc;
-                    img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
-                    d.image = img;
-                }
                 //console.log(item);                
                 var modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
 
@@ -271,7 +250,7 @@ define([
                     //console.log(this.model);
                     //console.log(item.toJSON());
                     var i = item.attributes;
-                    item.attributes.body =  i.who + "\n\n" + i.why;
+                    item.attributes.body =  i.contribution;
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;
@@ -328,33 +307,8 @@ define([
 
                 // $('div.background-image').lazyload();
                
-                // add links to standfirst
-                var text1 = dataHeader.standfirst;
-
-                var getLinks = function(text) {
-                        return dataLinks.filter(function(d) {
-                            return text.indexOf(d.key) !== -1; 
-                        });
-                    }; 
-                addLinkToText.render(text1, getLinks(text1), "js-standfirst");
-
-                // add map
-                var signerData = items.models.map(function(d) {
-                    var data = d.attributes,
-                        path = data.imgsrcsmall !== "" ? data.imgsrcsmall : data.imgsrc.replace(".jpg", "_s.jpg");
-                    return {
-                        id: data.id,
-                        name: data.namefirst,
-                        city: data.origin, 
-                        countrycode: data.countrycode,
-                        coord: data.coord,
-                        image: (data.imgflag !== 0) ? path : undefined
-                    };
-                }); 
-                map.render(mapJson, signerData, flag);
-                
                 stickElement();
-
+                    
                 return this;
             },
 
