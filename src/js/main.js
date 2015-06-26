@@ -179,6 +179,7 @@ define([
                 // reorder collection to avoid gaps in the grid
                 if($(document).width() > 980) {
                     _.each(this.model.models, function(item, i) {
+                        item.set({border: false}); 
                         if(item.attributes.updates[0].hasOwnProperty('image')) {
                             if(item.attributes.updates[0].image.orientation == 'landscape') {
                                 counter += 2;
@@ -196,6 +197,7 @@ define([
                             if(sliced.length > 0) {
                                 toMove = that.model.where({id: sliced[0].attributes.id});
                                 that.model.remove(toMove);
+                                toMove[0].attributes.border = false;
                                 that.model.add(toMove, {at: i});
                                 counter = 0;
                             } else {
@@ -203,6 +205,8 @@ define([
                             }
                         } else if(counter == perRow) {
                             counter = 0;
+                        } else {
+                            item.set({border: true}); 
                         }
                     });
                 }
@@ -226,7 +230,7 @@ define([
 
                 setTimeout(function() {
                     $(".page-" + page + " .background-image").lazyload();
-                }, 50);
+                }, 100);
 
                 return this;
             }
@@ -241,6 +245,7 @@ define([
                     headerTemplate = _.template(headerTmpl),
                     headerHTML = headerTemplate({
                         data: data,
+                        numberFound: totalNumber,
                         isWeb: isWeb
                     }),
                     footerTemplate = _.template(footerTmpl),
@@ -340,6 +345,7 @@ define([
                     if($(document).width() > 980) {
 
                         _.each(items.models, function(item, i) {
+                            item.set({border: false});
                             if(i > (page-1)*pageSize - 1) {
                                 if(item.attributes.updates[0].hasOwnProperty('image')) {
                                     if(item.attributes.updates[0].image.orientation == 'landscape') {
@@ -358,6 +364,7 @@ define([
                                     if(sliced.length > 0) {
                                         toMove = items.where({id: sliced[0].attributes.id});
                                         items.remove(toMove);
+                                        toMove[0].attributes.border = false;
                                         items.add(toMove, {at: i});
                                         counter = 0;
                                     } else {
@@ -365,6 +372,8 @@ define([
                                     }
                                 } else if(counter == perRow) {
                                     counter = 0;
+                                } else {
+                                    item.set({border: true}); 
                                 }
                             }
                         });
