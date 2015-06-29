@@ -222,7 +222,7 @@ define([
                 $(toAppend).appendTo(this.el);
 
                 var $main = $(".main");
-                $(window).scroll(_.throttle(function() {
+                $(window).scroll(_.debounce(function() {
                     if(pageSize*(page-1) < totalNumber && $(".main").offset().top + $(".main").height() - 1500 < $(window).scrollTop() + $(window).height()) {
                         loadMorePosts();
                     }
@@ -245,7 +245,7 @@ define([
                     headerTemplate = _.template(headerTmpl),
                     headerHTML = headerTemplate({
                         data: data,
-                        numberFound: totalNumber,
+                        numberFound: commafy(totalNumber),
                         isWeb: isWeb
                     }),
                     footerTemplate = _.template(footerTmpl),
@@ -327,7 +327,7 @@ define([
             $.ajax({
                 url: 'http://n0ticeapis.com/2/search?noticeboard=' + noticeboard + '&pageSize=' + pageSize + '&page=' + page + '&order=' + order + votedInterestingBy,
                 jsonp: 'callback',
-                jsonpCallback: "witnessVisuals",
+                jsonpCallback: "witnessVisuals" + page,
                 cache: true,
                 dataType: 'jsonp',
                 data: {
@@ -337,7 +337,7 @@ define([
                     response.results.map(function(result, i) {
                         items.add(result);
                     });
-
+                    console.log(items);
 
                     var toAppend = '', toMove, sliced;
 
@@ -409,6 +409,10 @@ define([
         } else {
             return textSubstr + '...';
         }
+    }
+
+    function commafy( num ) {
+        return num.toString().replace(/,/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
     }
 
     return {
