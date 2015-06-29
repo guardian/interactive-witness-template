@@ -2,6 +2,7 @@ define([
     'backbone',
     'lazyload',
     'partials/footerStickElement',
+    'partials/greekEnglishSwitch',
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',
     'text!templates/headerTemplate.html',
@@ -10,6 +11,7 @@ define([
     backbone,
     lazyload,
     stickElement,
+    langSwitch,
     itemTmpl,
     modalTmpl,
     headerTmpl,
@@ -23,8 +25,7 @@ define([
         page = 1,
         perRow = 4,
         counter = 0,
-        dataHeader = [], 
-        flag = { isMap: false }; 
+        dataHeader = []; 
 
     function init() {
         app();
@@ -250,7 +251,7 @@ define([
                     //console.log(this.model);
                     //console.log(item.toJSON());
                     var i = item.attributes;
-                    item.attributes.body =  i.contribution;
+                    item.attributes.body =  i.contributiongreek || i.contribution;
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;
@@ -308,7 +309,8 @@ define([
                 // $('div.background-image').lazyload();
                
                 stickElement();
-                    
+                langSwitch();
+
                 return this;
             },
 
@@ -355,15 +357,10 @@ define([
             app_router.on('route:closeRoute', function() {
                 $('.overlay__container').removeClass('overlay__container--show');
                 $('html').removeClass('dropdown-open');
-                
-                // scroll to map or card list
-                if(flag.isMap) {
-                    window.scrollTo(0, $('.js-contribution').offset().top);
-                }
-                else if(lastModal) {
-                    window.scrollTo(0, $('#item-' + lastModal + '').offset().top);
-                }
-                flag.isMap = false;
+               
+                if(lastModal) {
+                    window.scrollTo(0,$('#item-' + lastModal + '').offset().top);
+                }   
             });
 
             Backbone.history.start();

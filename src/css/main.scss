@@ -6,10 +6,8 @@
 $guss-webfonts-base-url: '//pasteup.guim.co.uk/fonts/';
 $gs-baseline: 12px;
 $gs-gutter: 20px;
-$c-yes: #ffcc00; 
-$c-no: #4bc6df;
-//$c-yes: #197caa;
-//$c-no: #cc2b12;
+$c-yes: #aad801; 
+$c-no: #dc2a7d;
 
 @import 'bower_components/pasteup-palette/src/_palette';
 @import 'bower_components/guss-webfonts/src/_webfonts.scss';
@@ -228,6 +226,8 @@ img {
 // misc
 
 /* atomic style */
+.c-76 { color: #767676; }
+
 .d-n { display: none; }
 .pos-r { position: relative; }
 .pos-f { position: fixed; }

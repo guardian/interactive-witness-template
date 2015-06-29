@@ -121,7 +121,7 @@
         @include mq(tablet) {
             .headline span {
                 &:after {
-                    content: 'VIEW CONTRIBUTION';
+                    content: 'READ MORE';
                     opacity: 1;
                     font-family: "Guardian Sans Web","Agate Sans",sans-serif;
                     border-bottom: 0;
