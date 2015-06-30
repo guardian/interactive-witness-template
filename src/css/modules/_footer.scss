@@ -54,6 +54,7 @@ footer {
         max-width: 100%;
         margin: 20px 0 15px 0;
         padding-left: 10px;
+        width: calc(100% - 60px); //to avoid arrow-up icon
         @include mq(desktop) {
         font-size: 1.5em;
         }

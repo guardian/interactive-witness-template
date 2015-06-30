@@ -49,7 +49,7 @@ define([
                     
                     d.id = i + 1;
                     d.headline = d.name;
-                    d.isEuro = (d.eurozone === "Yes") ? "yes" : "no";
+                    d.isEuro = d.eurozone.toLowerCase();
 
                     // img_flag 0 => no image 
                     // img_flag 1 => image with source and orientation
