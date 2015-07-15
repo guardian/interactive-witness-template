@@ -6,9 +6,9 @@
 $guss-webfonts-base-url: '//pasteup.guim.co.uk/fonts/';
 $gs-baseline: 12px;
 $gs-gutter: 20px;
-$c-yes: #aad801; 
-$c-no: #dc2a7d;
-$c-undecided: #767676;
+
+$c-yes:       #aad801; 
+$c-no:        #dc2a7d;
 
 @import 'bower_components/pasteup-palette/src/_palette';
 @import 'bower_components/guss-webfonts/src/_webfonts.scss';
@@ -253,10 +253,9 @@ img {
 }
 
 // Mark colors for yes/no to 
-// Greece staying in the eurozone
+// Greece's bailout deal
 .bb-yes { border-bottom: 3px solid $c-yes; }
 .bb-no  { border-bottom: 3px solid $c-no; }
-.bb-undecided { border-bottom: 3px solid $c-undecided; }
 
 
 @import 'modules/_header.scss';

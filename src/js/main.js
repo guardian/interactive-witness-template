@@ -50,7 +50,7 @@ define([
                     
                     d.id = i + 1;
                     d.headline = d.name;
-                    d.isEuro = d.eurozone.toLowerCase();
+                    d.isDeal = d.bailoutdeal.toLowerCase();
 
                     // img_flag 0 => no image 
                     // img_flag 1 => image with source and orientation
@@ -252,8 +252,7 @@ define([
                     //console.log(this.model);
                     //console.log(item.toJSON());
                     var i = item.attributes;
-                    item.attributes.body = i.contributionupdate || i.contributiongreek || i.contribution;
-                    item.attributes.update = i.contributionupdate !== '' ? 'item-update' : '';
+                    item.attributes.body = i.contribution;
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;

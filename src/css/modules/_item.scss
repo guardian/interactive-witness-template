@@ -109,12 +109,12 @@
         font-weight: 500;
         transition: padding ease-out 0.3s;
         
-        span { border-bottom: 3px solid $c-undecided; }
+        //span { border-bottom: 3px solid $c-undecided; }
     }
     
     &:hover {
         .quote span {
-            border-bottom:1px solid $c-undecided;
+            //border-bottom:1px solid $c-undecided;
             text-decoration: none !important;
         }
 
@@ -126,7 +126,7 @@
                     font-family: "Guardian Sans Web","Agate Sans",sans-serif;
                     border-bottom: 0;
                     display: block;
-                    color: $c-undecided;
+                    //color: $c-undecided;
                     font-size: 14px;
                     padding-top: $gs-baseline/2;
                     font-weight: 700;
@@ -368,17 +368,4 @@
             color: $c-no;
         }
     }
-}
-
-// update comments ?
-.item-update,
-.item-update .quote {
-    color: white;
-}
-.item-update.wrapper,
-.item-update.item {
-    background-color: #bdbdbd; //neutral-3
-}
-.item-update.inner {
-    background-color: #767676; //neutarl-2
 }
