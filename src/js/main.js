@@ -19,7 +19,8 @@ define([
 ) {
     'use strict';
 
-    var sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/19npo44gfmljeR4Z2Z7JW1HSk6Gg7EKq5-F9N6eSIg70.json',
+    var //sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/19npo44gfmljeR4Z2Z7JW1HSk6Gg7EKq5-F9N6eSIg70.json',
+        sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/1oY403P7W72tGo-kUwHkVWnStJ-2z1Fg4yXDUZ4Jf2pQ.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -251,7 +252,8 @@ define([
                     //console.log(this.model);
                     //console.log(item.toJSON());
                     var i = item.attributes;
-                    item.attributes.body =  i.contributiongreek || i.contribution;
+                    item.attributes.body = i.contributionupdate || i.contributiongreek || i.contribution;
+                    item.attributes.update = i.contributionupdate !== '' ? 'item-update' : '';
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;

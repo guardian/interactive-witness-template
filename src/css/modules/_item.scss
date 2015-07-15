@@ -369,3 +369,16 @@
         }
     }
 }
+
+// update comments ?
+.item-update,
+.item-update .quote {
+    color: white;
+}
+.item-update.wrapper,
+.item-update.item {
+    background-color: #bdbdbd; //neutral-3
+}
+.item-update.inner {
+    background-color: #767676; //neutarl-2
+}
