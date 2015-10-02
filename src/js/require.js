@@ -21,7 +21,8 @@ require.config({
     backbone: "../../bower_components/backbone/backbone",
     underscore: "../../bower_components/underscore/underscore",
     jquery: "../../bower_components/jquery/dist/jquery",
-    pegasus: "../../bower_components/pegasus/dist/pegasus-amd"
+    pegasus: "../../bower_components/pegasus/dist/pegasus-amd",
+    reqwest: "../../bower_components/reqwest/reqwest"
   },
   packages: [
 
