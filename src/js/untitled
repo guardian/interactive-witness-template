@@ -90,7 +90,7 @@ define([
                     $('.nav-icon--next, .nav-icon--prev').click(function(e) {
                         if(e.currentTarget.hash) {
                             e.preventDefault();
-                            app_router.navigate(e.currentTarget.hash,{trigger:true, replace: true});
+                            location.replace(e.currentTarget.hash);
                         }
                     });
                     
@@ -286,6 +286,14 @@ define([
             }
         });
 
+        // items.on("add", function(item) {
+        //     var template = _.template(itemTmpl);
+        //     var itemTemplate = template({item: item.toJSON(), trunc: trunc});
+        //     var $template = $(itemTemplate);
+
+        //     $template.appendTo(".main");
+        // })
+
         function initRouter() {
             app_router = new AppRouter;
 
@@ -331,6 +339,7 @@ define([
 
                     // reorder collection to avoid gaps in the grid
                     if($(document).width() > 980) {
+
                         _.each(items.models, function(item, i) {
                             item.set({border: false});
                             if(i > (page-1)*pageSize - 1) {
@@ -400,6 +409,7 @@ define([
                     items.add(response, {at: 0}); 
                     lastModal = itemID; 
                     modalView.addNavAtts(itemID);
+
                 }
             });
         }
