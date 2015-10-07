@@ -1,18 +1,11 @@
 <div class="header">
 	<div class="container">
-        <h1 class="h-english"><%= data.headline.replace(/\n/g, "<br/>") %></h1>
-        <h1 class="h-greek d-n"><%= data.headlinegreek.replace(/\n/g, "<br/>") %></h1>
-        <h2 class="h-english"><%= data.standfirst %></h2>
-        <h2 class="h-greek d-n"><%= data.standfirstgreek %></h2>
-        <div class="f-h2"><b>
-            <span class="bb-yes">Yes</span>/
-            <span class="bb-no">No</span> 
-            to Greece's bailout deal<br>
-            <%= data.contribution %></b>
-        </div>
+        <h1><%= data.headline.replace(/\n/g, "<br/>") %></h1>
+        <h2><%= data.standfirst %></h2>
+        <div class="f-h2"><b><%= data.contribution %></b></div>
 		<div class="header__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href.split("#")[0]) %>" target="_blank" class="social-icon facebook" data-link-name="social facebook voices-header"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
-            <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(data.headline + ' @guardian http://gu.com/p/4a5yq pic.twitter.com/WYeq8zN7Os') %>" target="_blank" data-link-name="social twitter voices-header" class="social-icon twitter"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
+            <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(data.headline + ' @guardian http://gu.com/p/4d4f7 pic.twitter.com/H3SomQNrli') %>" target="_blank" data-link-name="social twitter voices-header" class="social-icon twitter"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
 			<a href="mailto:?subject=<%= encodeURIComponent(data.headline) %>&body=<%= encodeURIComponent(encodeURIComponent(window.location.href.split("#")[0])) %>" target="_blank" class="social-icon email" data-link-name="social email voices-header"><img src="@@assetPath@@/imgs/share-email.svg"/></a>
 		</div>
 	</div>

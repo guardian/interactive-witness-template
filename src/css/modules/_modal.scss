@@ -15,7 +15,7 @@
 	-webkit-animation-duration: 0.25s;
     -webkit-animation-name: fadeInFromNone;
     padding-bottom: $gs-baseline*2;
-    z-index: 100;
+    z-index: 1040; //guardian's ad is 1040
 
     @include mq($until: desktop) {
     	position: absolute;
@@ -317,7 +317,8 @@
 
 	span {
 		font-weight: 700;
-	}
+	    margin-right: 6px;
+    }
     
 	@include mq(desktop) {
 		width: 580px;

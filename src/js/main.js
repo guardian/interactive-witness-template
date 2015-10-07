@@ -2,7 +2,6 @@ define([
     'backbone',
     'lazyload',
     'partials/footerStickElement',
-    'partials/greekEnglishSwitch',
     'text!templates/itemTemplate.html',
     'text!templates/modalTemplate.html',
     'text!templates/headerTemplate.html',
@@ -11,7 +10,6 @@ define([
     backbone,
     lazyload,
     stickElement,
-    langSwitch,
     itemTmpl,
     modalTmpl,
     headerTmpl,
@@ -19,8 +17,8 @@ define([
 ) {
     'use strict';
 
-    var //sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/19npo44gfmljeR4Z2Z7JW1HSk6Gg7EKq5-F9N6eSIg70.json',
-        sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/1oY403P7W72tGo-kUwHkVWnStJ-2z1Fg4yXDUZ4Jf2pQ.json',
+    var sheetKey = "1pud1zX_Op9B5ch9BHLCm0bvg3MlqknWmAVZeE-S-5F0",
+        sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -50,7 +48,6 @@ define([
                     
                     d.id = i + 1;
                     d.headline = d.name;
-                    d.isDeal = d.bailoutdeal.toLowerCase();
 
                     // img_flag 0 => no image 
                     // img_flag 1 => image with source and orientation
@@ -310,7 +307,6 @@ define([
                 // $('div.background-image').lazyload();
                
                 stickElement();
-                langSwitch();
 
                 return this;
             },

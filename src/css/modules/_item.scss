@@ -108,14 +108,18 @@
         line-height: 24px;
         font-weight: 500;
         transition: padding ease-out 0.3s;
-        
-        //span { border-bottom: 3px solid $c-undecided; }
     }
-    
+
     &:hover {
         .quote span {
-            //border-bottom:1px solid $c-undecided;
+            border-bottom: 2px solid $c-underline;
             text-decoration: none !important;
+        }
+        .headline span {
+            border-bottom: 2px solid $c-underline;
+        }
+        .headline span:after {
+            color: $c-underline;
         }
 
         @include mq(tablet) {
@@ -123,13 +127,12 @@
                 &:after {
                     content: 'READ MORE';
                     opacity: 1;
+                    font-size: 14px;
                     font-family: "Guardian Sans Web","Agate Sans",sans-serif;
+                    font-weight: 700;
                     border-bottom: 0;
                     display: block;
-                    //color: $c-undecided;
-                    font-size: 14px;
                     padding-top: $gs-baseline/2;
-                    font-weight: 700;
                     position: absolute;
                     bottom: $gs-baseline;
                 }
@@ -335,37 +338,6 @@
             left: 50%;
             top: 0;
             margin-top: 30px;
-        }
-    }
-}
-
-
-// stay in euro zone?
-.item-yes {
-    .headline span {
-        border-bottom: 3px solid $c-yes;
-    }
-    
-    &:hover {
-        .quote span {
-            border-bottom: 1px solid $c-yes;
-        }
-        .headline span:after {
-            color: $c-yes;
-        }
-    }
-}
-.item-no {
-    .headline span {
-        border-bottom: 3px solid $c-no;
-    }
-    
-    &:hover {
-        .quote span {
-            border-bottom: 1px solid $c-no;
-        }
-        .headline span:after {
-            color: $c-no;
         }
     }
 }

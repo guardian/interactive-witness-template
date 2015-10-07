@@ -7,15 +7,14 @@ $guss-webfonts-base-url: '//pasteup.guim.co.uk/fonts/';
 $gs-baseline: 12px;
 $gs-gutter: 20px;
 
-$c-yes:       #aad801; 
-$c-no:        #dc2a7d;
+$c-underline: #4bc6df; 
 
-@import 'bower_components/pasteup-palette/src/_palette';
-@import 'bower_components/guss-webfonts/src/_webfonts.scss';
-@import 'bower_components/guss-typography/_typography.scss';
+@import '../../bower_components/pasteup-palette/src/_palette';
+@import '../../bower_components/guss-webfonts/src/_webfonts.scss';
+@import '../../bower_components/guss-typography/_typography.scss';
 @import 'modules/_mq.scss';
-@import 'bower_components/guss-colours/_colours.scss';
-@import 'bower_components/pasteup-buttons/src/_buttons';
+@import '../../bower_components/guss-colours/_colours.scss';
+@import '../../bower_components/pasteup-buttons/src/_buttons';
 
 @include guss-webfonts();
 @include guss-typography-defaults;
@@ -251,12 +250,6 @@ img {
         font-size: 16px;
     }
 }
-
-// Mark colors for yes/no to 
-// Greece's bailout deal
-.bb-yes { border-bottom: 3px solid $c-yes; }
-.bb-no  { border-bottom: 3px solid $c-no; }
-
 
 @import 'modules/_header.scss';
 @import 'modules/_footer.scss';
