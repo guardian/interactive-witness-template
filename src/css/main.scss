@@ -6,12 +6,12 @@
 $gs-baseline: 12px;
 $gs-gutter: 20px;
 
-@import 'bower_components/pasteup-palette/src/_palette';
+@import '../../bower_components/pasteup-palette/src/_palette';
 
-@import 'bower_components/guss-typography/_typography.scss';
+@import '../../bower_components/guss-typography/_typography.scss';
 @import 'modules/_mq.scss';
-@import 'bower_components/guss-colours/_colours.scss';
-@import 'bower_components/pasteup-buttons/src/_buttons';
+@import '../../bower_components/guss-colours/_colours.scss';
+@import '../../bower_components/pasteup-buttons/src/_buttons';
 
 @include guss-typography-defaults;
 
