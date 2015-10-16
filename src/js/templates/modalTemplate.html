@@ -36,7 +36,7 @@
 			<%= model.updates[0].body.replace(/\n/g, "<br/>") %>
 		</div>
 		<div class="overlay__author">
-			by <span><%= model.user.displayName %></span>
+			by <span><a href="<%= model.user.profileUrl %>/witness"><%= model.user.displayName %></a></span>
 		</div>
 		<% if (data.open === "TRUE") { %>
 		<div class="header-item-wrapper h-button">
