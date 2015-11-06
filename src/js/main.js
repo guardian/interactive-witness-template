@@ -17,8 +17,8 @@ define([
 ) {
     'use strict';
 
-    var sheetKey = "1pud1zX_Op9B5ch9BHLCm0bvg3MlqknWmAVZeE-S-5F0",
-        sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/' + sheetKey + '.json',
+    var sheetKey = "1YnCRwMLQIEZU541jTH4LK8LoCnqzVdIpMw9_SE-Pouk",
+        sheetUrl = 'http://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -43,22 +43,20 @@ define([
             parse: function(resp) {
                 var dataContent = resp.sheets.CONTENT;
                 dataHeader = resp.sheets.HEADER[0];
-                
                 dataContent.map(function(d, i) {
                     
                     d.id = i + 1;
                     d.headline = d.name;
-
+                    
                     // img_flag 0 => no image 
                     // img_flag 1 => image with source and orientation
-                    if (d.imgflag === 1) {
+                    if (d.img_src.trim() !== "") {
                         var img = {};
                         
-                        img.src = d.imgsrc;
-                        img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
+                        img.src = d.img_src;
+                        img.orientation = (d.img_orientation === "l") ? "landscape" : "portrait";
                         d.image = img;
                     }
-                    
                     return d;
                 });
                 //console.log(dataContent);
@@ -304,10 +302,7 @@ define([
                     }
                 }, 250));
 
-                // $('div.background-image').lazyload();
-               
-                stickElement();
-
+                //stickElement();
                 return this;
             },
 
@@ -329,14 +324,6 @@ define([
                 "*actions": "closeRoute"
             }
         });
-
-        // items.on("add", function(item) {
-        //     var template = _.template(itemTmpl);
-        //     var itemTemplate = template({item: item.toJSON(), trunc: trunc});
-        //     var $template = $(itemTemplate);
-
-        //     $template.appendTo(".main");
-        // })
 
         function initRouter() {
             var app_router = new AppRouter;

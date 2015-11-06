@@ -6,7 +6,7 @@
                         <div class="background-image portrait" data-original="<%= item.image.src %>"></div>
                     </div>
                     <div class="inner">
-                        <div class="headline"><span><%= item.headline %></span></div>
+                        <div class="headline"><span><%= item.headline %><br><span class="title c-bd"><%= item.title %></span></span></div>
                     </div>
                 </div>
 
@@ -17,7 +17,7 @@
                     <div class="image__container">
                         <div class="background-image landscape" data-original="<%= item.image.src %>"></div>
                     </div>
-                    <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>
+                    <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %> <span class="title-img-l"><%= item.title %></span></span></div>
                 </div>
             </a>
     <% } %>
@@ -25,7 +25,7 @@
     <a href="#item-<%= item.id %>" id="item-<%= item.id %>" class="item item--no-image item--thin page-<%= page %>">
         <div class="wrapper">
             <div class="quote"><span><%= trunc(item.body, 200) %></span></div>
-            <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %></span></div>
+            <div class="headline"><span<% if(item.headline == 'Anonymous') { %> class="headline--anonymous"<% } %>><%= item.headline %><br><span class="title"><%= item.title %></span></span></div>
         </div>
     </a>
 <% } %>

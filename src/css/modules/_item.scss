@@ -102,6 +102,22 @@
         }
     }
     
+    .title {
+        color: #bdbdbd;
+        font-size: 16px;
+        font-weight: normal;
+    }
+    .title-img-p {
+        color: #bdbdbd;
+        font-size: 16px;
+        font-weight: normal;
+    }
+    .title-img-l {
+        color: #eaeaea;
+        font-size: 24px;
+        font-weight: normal;
+    }
+
     .headline {
         font-size: 20px;
         font-family: "Guardian Egyptian Web","Egyptian Display",Georgia,serif;
@@ -115,15 +131,15 @@
             border-bottom: 2px solid $c-underline;
             text-decoration: none !important;
         }
-        .headline span {
+        .headline > span {
             border-bottom: 2px solid $c-underline;
         }
-        .headline span:after {
+        .headline > span:after {
             color: $c-underline;
         }
 
         @include mq(tablet) {
-            .headline span {
+            .headline > span {
                 &:after {
                     content: 'READ MORE';
                     opacity: 1;

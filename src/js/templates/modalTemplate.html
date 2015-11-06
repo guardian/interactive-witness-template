@@ -31,9 +31,7 @@
 			<%= model.headline %>
 		</div>
 		<div class="overlay__author">
-            <% if (model.age) { %> Age <span><%= model.age %></span> <% } %> 
-            <% if (model.age) { %> Occupation <span><%= model.occupation %></span> <% } %>
-            <% if (model.age) { %> Location <span><%= model.location %></span> <% } %> 
+            <% if (model.profession) { %> Profession: <span><%= model.profession %></span> <% } %>
 		</div>
 		<div class="overlay__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
