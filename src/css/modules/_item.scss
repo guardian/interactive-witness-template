@@ -117,6 +117,8 @@
         font-size: 24px;
         font-weight: normal;
     }
+    @include mq(tablet)  { .title-img-p { color: #eaeaea; font-size: 24px; }}
+    @include mq(desktop) { .title-img-p { color: #bdbdbd; font-size: 16px; }}
 
     .headline {
         font-size: 20px;
