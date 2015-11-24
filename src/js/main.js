@@ -19,8 +19,12 @@ define([
 ) {
     'use strict';
 
+    var key = "1Yz0KcUAia6491UnbYKlOuIXTXobVdSKBZiSVyyXl0SM";
+    var url = sheetURL(key);
+
     var //sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/19npo44gfmljeR4Z2Z7JW1HSk6Gg7EKq5-F9N6eSIg70.json',
-        sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/1oY403P7W72tGo-kUwHkVWnStJ-2z1Fg4yXDUZ4Jf2pQ.json',
+        //sheetUrl = 'http://interactive.guim.co.uk/spreadsheetdata/1oY403P7W72tGo-kUwHkVWnStJ-2z1Fg4yXDUZ4Jf2pQ.json',
+        sheetUrl = url,
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -30,6 +34,11 @@ define([
 
     function init() {
         app();
+    }
+
+    function sheetURL(sheetID) {
+        var protocol = window.location.protocol === 'file:' ? 'https://' : '//';
+        return protocol + 'interactive.guim.co.uk/docsdata/' + sheetID + '.json';
     }
 
     function app() {

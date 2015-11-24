@@ -10,12 +10,12 @@ $gs-gutter: 20px;
 $c-yes:       #aad801; 
 $c-no:        #dc2a7d;
 
-@import 'bower_components/pasteup-palette/src/_palette';
-@import 'bower_components/guss-webfonts/src/_webfonts.scss';
-@import 'bower_components/guss-typography/_typography.scss';
+@import '../../bower_components/pasteup-palette/src/_palette';
+@import '../../bower_components/guss-webfonts/src/_webfonts.scss';
+@import '../../bower_components/guss-typography/_typography.scss';
 @import 'modules/_mq.scss';
-@import 'bower_components/guss-colours/_colours.scss';
-@import 'bower_components/pasteup-buttons/src/_buttons';
+@import '../../bower_components/guss-colours/_colours.scss';
+@import '../../bower_components/pasteup-buttons/src/_buttons';
 
 @include guss-webfonts();
 @include guss-typography-defaults;
