@@ -31,14 +31,18 @@
 			<%= model.headline %>
 		</div>
 		<div class="overlay__author">
+            <span><%= model.profession %></span>
+                
+		</div>
+		<!--<div class="overlay__author">
             Occupation <span><%= model.profession %></span>, says 
             <span class="bb-<%= model.isDeal %>"><%= model.isDeal %></span> to bailout deal
                 
-		</div>
+		</div>-->
 		<div class="overlay__social">
-			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
-			<a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(data.headline + ' by ' + model.headline) %>&url=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon twitter" data-link-name="social twitter voices-modal"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
-			<a href="mailto:?subject=<%= encodeURIComponent(data.headline) %>&body=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon email" data-link-name="social email voices-modal"><img src="@@assetPath@@/imgs/share-email.svg"/></a>
+			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('http://gu.com/p/4efqk') %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
+			<a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent('Please think again: readers respond to solar energy cuts' + ' by ' + model.headline) %>&url=http://gu.com/p/4efqk" target="_blank" class="social-icon twitter" data-link-name="social twitter voices-modal"><img src="@@assetPath@@/imgs/share-twitter.svg"/></a>
+			<a href="mailto:?subject=<%= encodeURIComponent('Please think again: readers respond to solar energy cuts') %>&body=<%= encodeURIComponent('http://gu.com/p/4efqk') %>" target="_blank" class="social-icon email" data-link-name="social email voices-modal"><img src="@@assetPath@@/imgs/share-email.svg"/></a>
 		</div>
 		<hr/>
         <% if (model.contribution) { %>

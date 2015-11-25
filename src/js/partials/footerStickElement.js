@@ -18,7 +18,8 @@ define([
             //console.log(offsetT, offsetB); 
         
             if (pOffset >= offsetT && pOffset <= offsetB) {
-                elSticky.className = cn + " sticky";
+                //elSticky.className = cn + " sticky";
+                elSticky.className = cn;
                 //console.log("sticky");
             } else {
                 elSticky.className = cn;

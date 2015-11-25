@@ -51,6 +51,7 @@ figure {
     }
 }
 
+
 .main,
 .footer-content {
     width: 100%;
@@ -240,6 +241,10 @@ img {
     line-height: 1.6em;
     max-width: 780px;
     margin-top: 20px;
+    
+    b {
+        display: none;
+    }
 
     a {
         color: #005689;
