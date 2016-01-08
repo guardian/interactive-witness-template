@@ -17,7 +17,7 @@ define([
 ) {
     'use strict';
 
-    var sheetKey = "1YnCRwMLQIEZU541jTH4LK8LoCnqzVdIpMw9_SE-Pouk",
+    var sheetKey = "1ZZw7o201fZbsUVZGf_n5KTj_QQbo3AU8PAw_Ij6rQJo",
         sheetUrl = 'http://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
