@@ -248,6 +248,7 @@ define([
                     //console.log(item.toJSON());
                     var i = item.attributes;
                     item.attributes.body = i.contribution;
+                    
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;
@@ -354,9 +355,12 @@ define([
     function trunc(text, limit) {
         //TODO: remove temp code
         if (text === undefined) { return; }
-
-        var textSubstr = text.substr(0,limit),
+        
+        //console.log(text);
+        var textNoLink = text.replace(/<a\b[^>]*>/gi, "").replace(/<\/a>/gi, "");
+        var textSubstr = textNoLink.substr(0,limit),
             firstSentence = textSubstr.substr(0, textSubstr.lastIndexOf('.'));
+        //console.log(firstSentence);
 
         if (firstSentence) {
             return firstSentence + '.';
