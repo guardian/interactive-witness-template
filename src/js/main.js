@@ -23,7 +23,12 @@ define([
 ) {
     'use strict';
 
-    var sheetUrl = 'http://visuals.guim.co.uk/spreadsheetdata/1hEvP1-VmVj0RQwt1G5jyGTh5WzXE9RwzE5t2PEK2YoA.json',
+        /* variables */
+    var shortUrl = "http://gu.com/p/4g8dm",
+        shortPic = "pic.twitter.com/*",
+        sheetKey = '1pI0sjBpjX5oeZT_VkFASE3RSpFU-OvxXeQAIUEZZPOs',
+        /* end of variables */
+        sheetUrl = 'http://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -49,8 +54,12 @@ define([
             },
             parse: function(resp) {
                 var dataContent = resp.sheets.CONTENT;
-                dataHeader = resp.sheets.HEADER[0];
-                dataLinks = resp.sheets.LINKS;
+                    dataHeader = resp.sheets.HEADER[0];
+                    dataLinks = resp.sheets.LINKS;
+                
+                dataHeader.shorturl = shortUrl;
+                dataHeader.shortpic = shortPic;
+
                 dataContent.map(function(d, i) {
                     
                     d.id = i + 1;
@@ -58,20 +67,14 @@ define([
                     d.city = d.origin.split(",")[0];
                     d.coord = [d.longitude, d.latitude];
                     
-                    d.headline = d.namefirst + " " + d.namelast;
+                    d.headline = d.name;
+                    //namefirst + " " + d.namelast;
                     
-                    
-                    // img_flag 0 => no image 
-                    // img_flag 1 => image uses for item page and map/grid views
-                    // img_flag 2 => image uses for item page and map view
-                    if (d.imgflag !== 0 && d.imgsrc === "") {
-                        d.imgsrc = "@@assetPath@@/imgs/witness/" + d.headline.replace(/\s|-/g, '') + ".jpg";
-                    }                   
-                    if (d.imgflag === 1) {
+                    if (d.img_src.trim() !== "") {
                         var img = {};
                         
-                        img.src = d.imgsrc;
-                        img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
+                        img.src = d.img_src;
+                        img.orientation = (d.img_orientation === "l") ? "landscape" : "portrait";
                         d.image = img;
                     }
                     return d;
@@ -96,14 +99,14 @@ define([
                 
                 var item = items.where({id: parseInt(itemID)})[0];
                 
-                // img_flag 2 => image uses for item page and map view
+                /*/ img_flag 2 => image uses for item page and map view
                 var d = item.attributes;
                 if (d.imgflag === 2) {
                     var img = {};
                     img.src = d.imgsrc;
                     img.orientation = (d.imgorientation === "l") ? "landscape" : "portrait";
                     d.image = img;
-                }
+                }*/
                 //console.log(item);                
                 var modalTemplate = this.template({model: item.toJSON(), data: dataHeader, number: items.models.length});
 
@@ -271,7 +274,7 @@ define([
                     //console.log(this.model);
                     //console.log(item.toJSON());
                     var i = item.attributes;
-                    item.attributes.body =  i.who + "\n\n" + i.why;
+                    item.attributes.body =  i.contribution;
                     var itemTemplate = this.template({item: item.toJSON(), trunc: trunc, page: page});
                     var $template = $(itemTemplate);
                     toAppend += itemTemplate;
@@ -329,7 +332,7 @@ define([
                 // $('div.background-image').lazyload();
                
                 // add links to standfirst
-                var text1 = dataHeader.standfirst;
+                /*var text1 = dataHeader.standfirst;
 
                 var getLinks = function(text) {
                         return dataLinks.filter(function(d) {
@@ -337,18 +340,20 @@ define([
                         });
                     }; 
                 addLinkToText.render(text1, getLinks(text1), "js-standfirst");
-
+                */
                 // add map
                 var signerData = items.models.map(function(d) {
                     var data = d.attributes,
-                        path = data.imgsrcsmall !== "" ? data.imgsrcsmall : data.imgsrc.replace(".jpg", "_s.jpg");
+                        path = data.img_src_small !== "" ?
+                               data.img_src_small : data.img_src;
+                    console.log(path);
                     return {
                         id: data.id,
-                        name: data.namefirst,
+                        name: data.name,//first,
                         city: data.origin, 
                         countrycode: data.countrycode,
                         coord: data.coord,
-                        image: (data.imgflag !== 0) ? path : undefined
+                        image: (path !== "") ? path : undefined
                     };
                 }); 
                 map.render(mapJson, signerData, flag);
