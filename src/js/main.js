@@ -28,7 +28,7 @@ define([
         shortPic = "pic.twitter.com/*",
         sheetKey = '1pI0sjBpjX5oeZT_VkFASE3RSpFU-OvxXeQAIUEZZPOs',
         /* end of variables */
-        sheetUrl = 'http://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
+        sheetUrl = 'https://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -36,7 +36,7 @@ define([
         counter = 0,
         dataHeader = [], 
         dataLinks = [],
-        flag = { isMap: false }; 
+        flag = { isMap: true }; 
 
     function init() {
         app();
@@ -358,7 +358,7 @@ define([
                 }); 
                 map.render(mapJson, signerData, flag);
                 
-                stickElement();
+                //stickElement();
 
                 return this;
             },
