@@ -10,7 +10,7 @@
   "license": "Apache 2.0",
   "config": {
     "port": 9000,
-    "s3_folder": "2016/01/witness-readers/"
+    "s3_folder": "2016/12/witness-366days/"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

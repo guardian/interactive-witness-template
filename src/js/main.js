@@ -24,9 +24,9 @@ define([
     'use strict';
 
         /* variables */
-    var shortUrl = "http://gu.com/p/4g8dm",
-        shortPic = "pic.twitter.com/*",
-        sheetKey = '1pI0sjBpjX5oeZT_VkFASE3RSpFU-OvxXeQAIUEZZPOs',
+    var shortUrl = "http://gu.com/p/5hb8d",
+        shortPic = "",//"pic.twitter.com/*",
+        sheetKey = '1lixjihQsMxj_sIHU0ffqwd8btbAZpBI3mXzrOlW4Mw4',
         /* end of variables */
         sheetUrl = 'https://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
@@ -61,12 +61,15 @@ define([
                 dataHeader.shortpic = shortPic;
 
                 dataContent.map(function(d, i) {
-                    
+                    //console.log(d);
+
                     d.id = i + 1;
-                    d.origin = ((d.place !== "") ? (d.place + ", ") : "") +  d.country;
-                    d.city = d.origin.split(",")[0];
-                    d.coord = [d.longitude, d.latitude];
-                    
+                    d.date = d.date; 
+                    d.origin = d.location;
+                    //d.origin = ((d.place !== "") ? (d.place + ", ") : "") +  d.country;
+                    //d.city = d.origin.split(",")[0];
+                    //d.coord = [d.longitude, d.latitude];
+
                     d.headline = d.name;
                     //namefirst + " " + d.namelast;
                     
@@ -342,7 +345,7 @@ define([
                 addLinkToText.render(text1, getLinks(text1), "js-standfirst");
                 */
                 // add map
-                var itemData = items.models.map(function(d) {
+                /*var itemData = items.models.map(function(d) {
                     var data = d.attributes,
                         path = data.img_src_small !== "" ?
                                data.img_src_small : data.img_src;
@@ -355,8 +358,8 @@ define([
                         coord: data.coord,
                         image: (path !== "") ? path : undefined
                     };
-                }); 
-                map.render(mapJson, itemData, flag);
+                });*/ 
+                //map.render(mapJson, itemData, flag);
                 
                 stickElement();
 

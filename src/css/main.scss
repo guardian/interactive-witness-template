@@ -116,6 +116,7 @@ figure {
     @include mq(desktop) {
         width: 980px;
         height: auto;
+        min-height: 30px;    
     }
 
     @include mq(leftCol) {

@@ -32,7 +32,8 @@
 		</div>
 		<div class="overlay__author">
             <% if (model.title_long) { %><span><%= model.title_long %></span> <% } %>
-            <% if (model.origin) { %> from: <span><%= model.origin %></span> <% } %>
+            <% if (model.origin) { %> Location <span><%= model.origin %></span><br> <% } %>
+            <% if (model.date) { %> Date <span><%= model.date %></span> <% } %>
 		</div>
 		<div class="overlay__social">
 			<a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent(window.location.href) %>" target="_blank" class="social-icon facebook" model-link-name="social facebook voices-modal"><img src="@@assetPath@@/imgs/share-facebook.svg"/></a>
