@@ -28,7 +28,7 @@ define([
         shortPic = "pic.twitter.com/*",
         sheetKey = '1pI0sjBpjX5oeZT_VkFASE3RSpFU-OvxXeQAIUEZZPOs',
         /* end of variables */
-        sheetUrl = 'http://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
+        sheetUrl = 'https://interactive.guim.co.uk/docsdata-test/' + sheetKey + '.json',
         isWeb = typeof window.guardian === "undefined" ? false : true,
         lastModal,
         page = 1,
@@ -342,21 +342,21 @@ define([
                 addLinkToText.render(text1, getLinks(text1), "js-standfirst");
                 */
                 // add map
-                var signerData = items.models.map(function(d) {
+                var itemData = items.models.map(function(d) {
                     var data = d.attributes,
                         path = data.img_src_small !== "" ?
                                data.img_src_small : data.img_src;
-                    console.log(path);
+                    //console.log(path);
                     return {
                         id: data.id,
                         name: data.name,//first,
                         city: data.origin, 
-                        countrycode: data.countrycode,
+                        countrycode: data.country_code,
                         coord: data.coord,
                         image: (path !== "") ? path : undefined
                     };
                 }); 
-                map.render(mapJson, signerData, flag);
+                map.render(mapJson, itemData, flag);
                 
                 stickElement();
 

@@ -79,10 +79,26 @@ define([
     }
 
 
-    function createSvg(mapJson, signerData) {
+    function createSvg(mapJson, itemDataRaw) {
         var svg, svgMap, svgPins, svgVoronoi;
-        
+        var itemData = [];
+
         function init() {
+            // data check
+            itemDataRaw.forEach(function(item, i) {
+                var coord = item.coord;
+                item.coord = [parseFloat(coord[0]), parseFloat(coord[1])];
+                if (isNaN(item.coord[0]) || isNaN(item.coord[1])) {
+                    var row = i + 2;
+                    window.alert("Friendly warngin: " +
+                        "Either latitude and/or longtitude value on row " + 
+                        row + " in your google spreadsheet is not valid."
+                    );
+                } else {
+                    itemData.push(item);
+                }
+            });
+            
             svg  = d3.select(".map").append("svg").classed("d-n", true);
             
             // map
@@ -95,7 +111,7 @@ define([
 
             // pins
             svgPins = svg.selectAll("circle")
-            .data(signerData)
+            .data(itemData)
             .enter().append("circle")
             .attr("class", function(d, i) { return "circle item-" + i; })
             .attr("r", 3);
@@ -108,7 +124,7 @@ define([
                 path = d3.geo.path().projection(proj);
 
             var points = [];
-            signerData.forEach(function(d) {
+            itemData.forEach(function(d) {
                 points.push(proj(d.coord));
             });
 
@@ -143,7 +159,7 @@ define([
                 return "M" + d.join("L") + "Z";
             })
             .on("mouseenter", function(d, i) {
-                onMouseEnter(signerData[i], i, points[i][0], points[i][1]);
+                onMouseEnter(itemData[i], i, points[i][0], points[i][1]);
             });
 
             // create new
@@ -154,13 +170,13 @@ define([
                 return "M" + d.join("L") + "Z";
             })
             .on("mouseleave", function(d, i) {
-                onMouseLeave(signerData[i], i);
+                onMouseLeave(itemData[i], i);
             })
             .on("mouseenter", function(d, i) {
-                onMouseEnter(signerData[i], i, points[i][0], points[i][1]);
+                onMouseEnter(itemData[i], i, points[i][0], points[i][1]);
            })
             .on("click", function(d, i) {
-                window.location.hash = "#item-" + signerData[i].id;
+                window.location.hash = "#item-" + itemData[i].id;
                 flag.isMap = true;
             });        
  
@@ -175,9 +191,9 @@ define([
     }
 
     var type = 0;
-    function render(mapJson, signerData, flag) {
+    function render(mapJson, itemData, flag) {
 
-        var map = createSvg(mapJson, signerData);
+        var map = createSvg(mapJson, itemData);
         map.init();
 
         var to = null;
